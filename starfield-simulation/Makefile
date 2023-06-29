@@ -1,9 +1,9 @@
 CXX := g++
 SFML_LIBS := -lsfml-graphics -lsfml-window -lsfml-system
 
-TARGET := stars
+TARGET := starfield
 
-SRC := main.cpp
+SRC := starfield.cpp
 OBJ := $(SRC:.cpp=.o)
 
 all: $(TARGET)
