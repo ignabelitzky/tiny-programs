@@ -11,10 +11,12 @@ class Star {
     Star(float a, float b) {
         std::random_device rd;
         std::mt19937 gen(rd());
+        std::uniform_real_distribution<float> randX(WINDOW_WIDTH / 2.0 - 3, WINDOW_WIDTH / 2.0 + 3);
+        std::uniform_real_distribution<float> randY(WINDOW_HEIGHT / 2.0 - 3, WINDOW_HEIGHT / 2.0 + 3);
         std::uniform_real_distribution<float> velDist(50.0f, 100.0f);
         std::uniform_real_distribution<float> angleDist(0.0f, 2 * 3.141592f);
 
-        position = sf::Vector2f(WINDOW_WIDTH / 2.0, WINDOW_HEIGHT / 2.0);
+        position = sf::Vector2f(randX(gen), randY(gen));
         velocity = sf::Vector2f(velDist(gen) * std::cos(angleDist(gen)), velDist(gen) * std::sin(angleDist(gen)));
         mustDelete = false;
     }
