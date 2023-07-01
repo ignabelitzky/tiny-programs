@@ -2,8 +2,8 @@
 
 #define VELOCITY .005f
 
-#define WINDOW_WIDTH 800
+#define WINDOW_WIDTH 1600
 
-#define WINDOW_HEIGHT 400
+#define WINDOW_HEIGHT 800
 
-#define NUM_STARS 100
+#define NUM_STARS 140
