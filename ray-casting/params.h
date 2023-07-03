@@ -1,5 +1,5 @@
 #pragma once
 
-constexpr int width = 400;
+constexpr int width = 1920;
 
-constexpr int height = 400;
+constexpr int height = 900;

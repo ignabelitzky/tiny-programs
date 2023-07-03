@@ -6,7 +6,7 @@ static float degreesToRadians(float degrees) {
 
 Particle::Particle() {
     this->position = sf::Vector2f(width / 2, height / 2);
-    for(int a = 0; a < 360; a += 10) {
+    for(int a = 0; a < 360; a += 5) {
         Ray ray(this->position, degreesToRadians(a));
         this->rays.push_back(ray);
     }
@@ -26,13 +26,25 @@ void Particle::show(sf::RenderWindow& window) {
     window.draw(circle);
 }
 
-void Particle::look(sf::RenderWindow& window, Boundary b) {
+void Particle::look(sf::RenderWindow& window, std::vector<Boundary> boundaries) {
     for(int i = 0; i < this->rays.size(); ++i) {
-        auto intersection = rays.at(i).cast(b);
-        if(intersection.has_value()) {
+        std::optional<sf::Vector2f> closest = std::nullopt;
+        std::optional<sf::Vector2f> intersection = std::nullopt;
+        float record = std::numeric_limits<float>::infinity();
+        for(int j = 0; j < boundaries.size(); ++j) {
+            intersection = this->rays[i].cast(boundaries[j]);
+            if(intersection.has_value()) {
+                float dist = std::hypot(intersection.value().x - this->position.x, intersection.value().y - this->position.y);
+                if(dist < record) {
+                    record = dist;
+                    closest = intersection;
+                }
+            }
+        }
+        if(closest.has_value()) {
             sf::VertexArray line(sf::Lines, 2);
             line[0].position = this->position;
-            line[1].position = intersection.value();
+            line[1].position = closest.value();
             window.draw(line);
         }
     }
