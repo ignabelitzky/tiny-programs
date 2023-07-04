@@ -11,9 +11,10 @@ class GravitySource {
             pos.x = pos_x;
             pos.y = pos_y;
             this->strength = strength;
+            s.setFillColor(sf::Color::Red);
+            s.setOrigin(70.0f, 70.0f);
+            s.setRadius(70.0f);
             s.setPosition(pos);
-            s.setFillColor(sf::Color::White);
-            s.setRadius(20);
         }
 
         void render(sf::RenderWindow& wind) {
@@ -41,9 +42,10 @@ class Particle {
             pos.y = pos_y;
             vel.x = vel_x;
             vel.y = vel_y;
+            s.setFillColor(sf::Color::Yellow);
+            s.setOrigin(0.5f, 0.5f);
+            s.setRadius(0.5f);
             s.setPosition(pos);
-            s.setFillColor(sf::Color::White);
-            s.setRadius(1.5f);
         }
 
         void render(sf::RenderWindow& wind) {
@@ -81,18 +83,20 @@ class Particle {
 
 
 int main() {
-    sf::RenderWindow window(sf::VideoMode(1600, 900), "My Program");
+    constexpr int width = 1600;
+    constexpr int height = 900;
+    sf::RenderWindow window(sf::VideoMode(width, height), "Gravity");
     window.setVerticalSyncEnabled(true);
 
     std::random_device rd;
     std::mt19937 gen(rd());
-    std::uniform_real_distribution<float> velDist(1.0f, 5.0f);
-    std::uniform_real_distribution<float> posXDist(0.0f, 1600.0f);
-    std::uniform_real_distribution<float> posYDist(0.0f, 900.0f);
+    std::uniform_real_distribution<float> velDist(0.1f, 1.0f);
+    std::uniform_real_distribution<float> posXDist(0.0f, width);
+    std::uniform_real_distribution<float> posYDist(0.0f, height);
 
-    GravitySource source(800, 450, 7000);
+    GravitySource source(width/2, height/2, 14000);
     std::vector<Particle> particles;
-    for(int i = 0; i < 500; ++i) {
+    for(int i = 0; i < 10000; ++i) {
         Particle p(posXDist(gen), posYDist(gen), velDist(gen), velDist(gen));
         particles.push_back(p);
     }
@@ -105,9 +109,16 @@ int main() {
         }
 
         window.clear();
-        for(int i = 0; i < particles.size(); ++i) {
-            particles.at(i).update_physics(source);
-            particles.at(i).render(window);
+        for (auto it = particles.begin(); it != particles.end();) {
+            sf::Vector2f position = it->get_pos();
+            if (position.x > width/2 - 50.0f && position.x < width/2 + 50.0f &&
+                position.y > height/2 - 50.0f && position.y < height/2 + 50.0f) {
+                it = particles.erase(it);
+            } else {
+                it->update_physics(source);
+                it->render(window);
+                ++it;
+            }
         }
         source.render(window);
         window.display();
