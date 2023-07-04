@@ -11,7 +11,9 @@ Boundary::~Boundary() {
 void Boundary::show(sf::RenderWindow& window) {
     sf::VertexArray line(sf::Lines, 2);
     line[0].position = this->fstPoint;
+    line[0].color = sf::Color::Red;
     line[1].position = this->sndPoint;
+    line[1].color = sf::Color::Red;
     window.draw(line);
 }
 

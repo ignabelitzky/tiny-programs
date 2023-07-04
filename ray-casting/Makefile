@@ -1,4 +1,5 @@
 CXX := g++
+CXXFLAGS := -O2 -march=native -std=c++23 -Wall -Werror -Wextra -pedantic
 SFML_LIBS := -lsfml-graphics -lsfml-window -lsfml-system
 
 TARGET := main
@@ -12,7 +13,7 @@ $(TARGET): $(OBJ)
 	$(CXX) -o $@ $^ $(SFML_LIBS)
 
 %.o: %.cpp
-	$(CXX) -c -o $@ $<
+	$(CXX) -c -o $@ $< $(CXXFLAGS)
 
 clean:
 	rm -f $(TARGET) $(OBJ)

@@ -23,6 +23,7 @@ void Ray::show(sf::RenderWindow& window) {
 }
 
 std::optional<sf::Vector2f> Ray::cast(Boundary b) {
+    std::optional<sf::Vector2f> result = std::nullopt;
     sf::Vector2f fst = b.getFstPoint();
     sf::Vector2f snd = b.getSndPoint();
 
@@ -34,20 +35,13 @@ std::optional<sf::Vector2f> Ray::cast(Boundary b) {
     float y4 = this->position.y + this->direction.y;
 
     float den = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4);
-    if(den == 0) {
-        return std::nullopt;
-    } else {
+    if(den != 0) {
         float t = ((x1 - x3) * (y3 - y4) - (y1 - y3) * (x3 - x4)) / den;
         float u = -((x1 - x2) * (y1 - y3) - (y1 - y2) * (x1 - x3)) / den;
-        if(t > 0 && t < 1 && u > 0) {
-            sf::Vector2f result;
-            result.x = x1 + t * (x2 - x1);
-            result.y = y1 + t * (y2 - y1);
-            return result;
-        } else {
-            return std::nullopt;
-        }
+        if(t > 0 && t < 1 && u > 0)
+            result = sf::Vector2f(x1 + t * (x2 - x1), y1 + t * (y2 - y1));
     }
+    return result;
 }
 
 void Ray::setPosition(float posX, float posY) {

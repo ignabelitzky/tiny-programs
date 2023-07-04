@@ -1,27 +1,17 @@
+#include <random>
 #include "ray.h"
 #include "boundary.h"
 #include "particle.h"
 
+void mapGenerator(std::vector<Boundary>&, int);
+
 int main() {
     sf::RenderWindow window(sf::VideoMode(width, height), "Ray Casting");
     window.setVerticalSyncEnabled(true);
+    window.setMouseCursorVisible(false);
 
-    // Map
-    Boundary leftWall(50, 50, 50, height - 50);
-    Boundary rightWall(width - 50, 50, width - 50, height - 50);
-    Boundary topWall(50, 50, width - 50, 50);
-    Boundary bottomWall(50, height - 50, width - 50, height - 50);
-    Boundary w1(150, 150, 650, 500);
-    Boundary w2(650, 500, 500, 100);
-    Boundary w3(1400, 350, 620, 700);
     std::vector<Boundary> walls;
-    walls.push_back(leftWall);
-    walls.push_back(rightWall);
-    walls.push_back(topWall);
-    walls.push_back(bottomWall);
-    walls.push_back(w1);
-    walls.push_back(w2);
-    walls.push_back(w3);
+    mapGenerator(walls, numLines);
 
     Particle particle;
 
@@ -33,7 +23,7 @@ int main() {
         }
         sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
         window.clear();
-        for(int i = 0; i < walls.size(); ++i) {
+        for(size_t i = 0; i < walls.size(); ++i) {
             walls[i].show(window);
         }
         particle.update(mousePosition.x, mousePosition.y);
@@ -42,4 +32,27 @@ int main() {
         window.display();
     }
     return 0;
+}
+
+void mapGenerator(std::vector<Boundary>& a, int lines = 3) {
+    std::random_device rd;
+    std::mt19937 gen(rd());
+
+    std::uniform_real_distribution<float> xDist(75.0f, width - 75.0f);
+    std::uniform_real_distribution<float> yDist(75.0f, height - 75.0f);
+
+    Boundary leftWall(50, 50, 50, height - 50);
+    Boundary rightWall(width - 50, 50, width - 50, height - 50);
+    Boundary topWall(50, 50, width - 50, 50);
+    Boundary bottomWall(50, height - 50, width - 50, height - 50);
+
+    a.push_back(leftWall);
+    a.push_back(rightWall);
+    a.push_back(topWall);
+    a.push_back(bottomWall);
+
+    for(int i = 0; i < lines; ++i) {
+        Boundary b(xDist(gen), yDist(gen), xDist(gen), yDist(gen));
+        a.push_back(b);
+    }
 }
