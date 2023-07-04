@@ -20,11 +20,6 @@ void Particle::show(sf::RenderWindow& window) {
     circle.setOrigin(1.0, 1.0);
     circle.setPosition(this->position);
     circle.setRadius(1.0f);
-    /*
-    for(size_t i = 0; i < this->rays.size(); ++i) {
-        this->rays.at(i).show(window);
-    }
-    */
     window.draw(circle);
 }
 
