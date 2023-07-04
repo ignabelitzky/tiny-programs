@@ -8,6 +8,7 @@ class Drop {
     public:
         Drop();
         ~Drop();
+        void restartDrop();
         void fall();
         void show(sf::RenderWindow& window);
         sf::Vector2f getPosition();
@@ -15,4 +16,6 @@ class Drop {
     private:
         sf::Vector2f position;
         float ySpeed;
+        float z;
+        float length;
 };
