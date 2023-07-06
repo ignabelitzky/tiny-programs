@@ -6,13 +6,17 @@
 void mapGenerator(std::vector<Boundary>&, int);
 
 int main() {
+    // Creating the window for the ray casting visualization
     sf::RenderWindow window(sf::VideoMode(width, height), "Ray Casting");
     window.setVerticalSyncEnabled(true);
     window.setMouseCursorVisible(false);
 
+    // Creating a vector to store the boundaries of the map
     std::vector<Boundary> walls;
+
     mapGenerator(walls, numLines);
 
+    // Creating a particle for ray casting
     Particle particle;
 
     while(window.isOpen()) {
@@ -21,20 +25,32 @@ int main() {
             if(event.type == sf::Event::Closed)
                 window.close();
         }
+        // Getting the mouse position for particle movement
         sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
+
+        // Clearing the window
         window.clear();
+
+        // Rendering and displaying the boundaries
         for(size_t i = 0; i < walls.size(); ++i) {
             walls[i].show(window);
         }
+
+        // Updating and rendering the particle
         particle.update(mousePosition.x, mousePosition.y);
         particle.show(window);
+
+        // Performing ray casting and rendering the rays
         particle.look(window, walls);
+
+        // Displaying the updated window
         window.display();
     }
     return 0;
 }
 
-void mapGenerator(std::vector<Boundary>& a, int lines = 3) {
+// Function to generate the map with random boundaries
+void mapGenerator(std::vector<Boundary>& boundaries, int lines = 3) {
     std::random_device rd;
     std::mt19937 gen(rd());
 
@@ -46,13 +62,13 @@ void mapGenerator(std::vector<Boundary>& a, int lines = 3) {
     Boundary topWall(50, 50, width - 50, 50);
     Boundary bottomWall(50, height - 50, width - 50, height - 50);
 
-    a.push_back(leftWall);
-    a.push_back(rightWall);
-    a.push_back(topWall);
-    a.push_back(bottomWall);
+    boundaries.push_back(leftWall);
+    boundaries.push_back(rightWall);
+    boundaries.push_back(topWall);
+    boundaries.push_back(bottomWall);
 
     for(int i = 0; i < lines; ++i) {
         Boundary b(xDist(gen), yDist(gen), xDist(gen), yDist(gen));
-        a.push_back(b);
+        boundaries.push_back(b);
     }
 }
