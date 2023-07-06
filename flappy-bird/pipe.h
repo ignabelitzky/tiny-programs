@@ -14,6 +14,7 @@ class Pipe {
         void show(sf::RenderWindow& window);
         void setPosition(sf::Vector2f position);
         sf::Vector2f getPosition();
+        bool isOffscreen();
     private:
         sf::RectangleShape m_pipe;
         sf::Vector2f m_position;
