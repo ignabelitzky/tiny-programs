@@ -45,3 +45,11 @@ void Bird::setPosition(sf::Vector2f position) {
 sf::Vector2f Bird::getPosition() {
     return m_position;
 }
+
+bool Bird::isAlive() {
+    return m_isAlive;
+}
+
+void Bird::revive() {
+    m_isAlive = true;
+}

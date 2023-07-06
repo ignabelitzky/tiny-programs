@@ -12,6 +12,8 @@ class Bird {
         void show(sf::RenderWindow& window);
         void setPosition(sf::Vector2f position);
         sf::Vector2f getPosition();
+        bool isAlive();
+        void revive();
     private:
         sf::CircleShape m_bird;
         sf::Color m_color;

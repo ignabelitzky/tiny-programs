@@ -15,4 +15,4 @@ constexpr int pipeStartPositionY = 0;
 constexpr int minPipeWidth = 20;
 constexpr int maxPipeWidth = 80;
 constexpr int minPipeHeight = 20;
-constexpr int maxPipeHeight = height - 2 * birdRadius;
+constexpr int maxPipeHeight = height - 5 * birdRadius;
