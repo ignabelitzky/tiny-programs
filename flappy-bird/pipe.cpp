@@ -1,8 +1,8 @@
 #include "pipe.h"
 
 Pipe::Pipe(sf::Vector2f position) {
-    m_width = getRandomInt(20, 60);
-    m_height = getRandomInt(5, height - 60);
+    m_width = getRandomInt(minPipeWidth, maxPipeWidth);
+    m_height = getRandomInt(minPipeHeight, maxPipeHeight);
     m_position = position;
     m_hitColor = sf::Color::Red;
     m_defaultColor = sf::Color(138, 43, 226);

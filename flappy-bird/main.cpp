@@ -11,11 +11,14 @@ int main() {
     sf::Clock clock;
     sf::Time elapsedtime;
     
-    float limitSecond = getRandomFloat(1.f, 3.f);
+    // Time to generate new pipe
+    float limitSecond = getRandomFloat(1.f, 2.f);
     
-    int birdRadius = 30;
-    sf::Vector2f birdPosition(120, height/2);
-    sf::Vector2f pipePosition(width, 0);
+    // Bird start position
+    sf::Vector2f birdPosition(birdStartPositionX, birdStartPositionY);
+
+    // Pipe start position
+    sf::Vector2f pipePosition(pipeStartPositionX, pipeStartPositionY);
      
     
     Bird bird(birdRadius, birdPosition);
@@ -30,7 +33,6 @@ int main() {
 
         // Get the elapsed time
         elapsedtime = clock.getElapsedTime();
-
 
         if(elapsedtime.asSeconds() >= limitSecond) {
             Pipe pipe(pipePosition);
@@ -55,7 +57,7 @@ int main() {
                 it = pipes.erase(it);
             } else {
                 if(it->hit(bird)) {
-                    // TO-DO
+                    // Here we should discount lives
                 }
                 it->show(window);
                 ++it;
