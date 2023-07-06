@@ -1,22 +1,8 @@
-#include <iostream>
 #include <SFML/Graphics.hpp>
 #include "params.h"
+#include "helper.h"
 #include "bird.h"
 #include "pipe.h"
-
-static float getRandomFloat(float min, float max) {
-    // Obtain a random seed using the current time
-    std::srand(static_cast<unsigned int>(std::time(nullptr)));
-
-    // Create a random number generator engine
-    std::default_random_engine generator(std::rand());
-
-    // Create a distribution to define the range
-    std::uniform_real_distribution<float> distribution(min, max);
-
-    // Generate and return a random float within the range
-    return distribution(generator);
-}
 
 int main() {
     sf::RenderWindow window(sf::VideoMode(width, height), "Flappy Bird");
@@ -63,13 +49,14 @@ int main() {
 
         bird.update();
 
-        std::cout << "Vector size: " << pipes.size() << std::endl;
-
         for(std::vector<Pipe>::iterator it = pipes.begin(); it != pipes.end();  ) {
             it->update();
             if(it->isOffscreen()) {
                 it = pipes.erase(it);
             } else {
+                if(it->hit(bird)) {
+                    // TO-DO
+                }
                 it->show(window);
                 ++it;
             }

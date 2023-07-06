@@ -1,9 +1,9 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
-#include <random>
-#include <ctime>
 #include "params.h"
+#include "helper.h"
+#include "bird.h"
 
 class Pipe {
     public:
@@ -15,10 +15,13 @@ class Pipe {
         void setPosition(sf::Vector2f position);
         sf::Vector2f getPosition();
         bool isOffscreen();
+        bool hit(Bird& bird);
     private:
         sf::RectangleShape m_pipe;
         sf::Vector2f m_position;
         float m_speed;
         float m_width;
         float m_height;
+        sf::Color m_defaultColor;
+        sf::Color m_hitColor;
 };

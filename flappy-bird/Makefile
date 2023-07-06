@@ -4,7 +4,7 @@ SFML_LIBS := -lsfml-graphics -lsfml-system -lsfml-window
 
 TARGET := flappy
 
-SRC := main.cpp bird.cpp pipe.cpp
+SRC := main.cpp bird.cpp pipe.cpp helper.cpp
 OBJ := $(SRC:.cpp=.o)
 
 $(TARGET): $(OBJ)

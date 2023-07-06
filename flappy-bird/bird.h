@@ -14,6 +14,7 @@ class Bird {
         sf::Vector2f getPosition();
     private:
         sf::CircleShape m_bird;
+        sf::Color m_color;
         sf::Vector2f m_position;
         int m_radius;
         float m_gravity;

@@ -1,6 +1,7 @@
 #include "bird.h"
 
 Bird::Bird(int radius, sf::Vector2f position) {
+    m_color = sf::Color::Yellow;
     m_isAlive = true;
     m_upForce = 2.5f;
     m_radius = radius;
@@ -9,6 +10,7 @@ Bird::Bird(int radius, sf::Vector2f position) {
     m_bird.setRadius(m_radius);
     m_bird.setOrigin(m_radius, m_radius);
     m_bird.setPosition(position.x - m_radius, position.y - m_radius);
+    m_bird.setFillColor(m_color);
     m_position = m_bird.getPosition();
 }
 
