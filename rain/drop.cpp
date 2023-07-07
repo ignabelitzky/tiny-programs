@@ -47,8 +47,9 @@ void Drop::restartDrop() {
 void Drop::fall() {
     this->position.y += this->ySpeed;
     this->position.y += 0.2f;
-    if(this->position.y > height)
+    if(this->position.y > height) {
         this->restartDrop();
+    }
 }
 
 void Drop::show(sf::RenderWindow& window) {

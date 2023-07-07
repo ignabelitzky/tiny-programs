@@ -4,7 +4,7 @@ SFML_LIBS := -lsfml-graphics -lsfml-window -lsfml-system
 
 TARGET := rain
 
-SRC := main.cpp drop.cpp
+SRC := main.cpp drop.cpp splash.cpp helper.cpp
 OBJ := $(SRC:.cpp=.o)
 
 all: $(TARGET)
