@@ -28,7 +28,7 @@ static float calculateAngleDirection(const sf::Vector2f& vector) {
 }
 
 Rocket::Rocket() {
-    m_position = sf::Vector2f(width/2.0f, height - 10.0f);
+    m_position = sf::Vector2f(20.f, height/2.f);
     m_rocket.setPosition(m_position);
     m_velocity = sf::Vector2f(0.0f, 0.0f);
     m_acceleration = sf::Vector2f(0.0f, 0.0f);
@@ -39,7 +39,7 @@ Rocket::Rocket() {
 }
 
 Rocket::Rocket(DNA d) {
-    m_position = sf::Vector2f(width/2.0f, height - 10.0f);
+    m_position = sf::Vector2f(20.f, height/2.f);
     m_rocket.setPosition(m_position);
     m_velocity = sf::Vector2f(0.0f, 0.0f);
     m_acceleration = sf::Vector2f(0.0f, 0.0f);
@@ -74,19 +74,21 @@ void Rocket::update(sf::Vector2f targetPos) {
     float deltaX = targetPos.x - m_position.x;
     float deltaY = targetPos.y - m_position.y;
     float d = std::sqrt(deltaX * deltaX + deltaY * deltaY);
-    if(d < 10) {
+    if(d < 15) {
         if(!m_completed) {
             ++reached;
         }
         m_completed = true;
         m_position = targetPos;
     }
+    /* Check the walls
     if(m_position.x > width || m_position.x < 0) {
         m_crashed = true;
     }
     if(m_position.y < 0 || m_position.y > height) {
         m_crashed = true;
     }
+    */
     this->applyForce(m_dna.getGene(count));
     if(!m_completed && !m_crashed) {
         m_velocity += m_acceleration;
