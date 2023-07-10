@@ -13,6 +13,6 @@ class Population {
         void run(sf::RenderWindow& window, sf::Vector2f targetPos);
         int size();
     private:
-        std::vector<Rocket> rockets;
-        std::vector<Rocket> matingPool;
+        std::vector<Rocket> m_rockets;
+        std::vector<Rocket> m_matingPool;
 };

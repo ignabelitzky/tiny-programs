@@ -4,7 +4,7 @@ SFML_LIBS := -lsfml-graphics -lsfml-system -lsfml-window
 
 TARGET := rocket
 
-SRC := main.cpp rocket.cpp population.cpp dna.cpp
+SRC := main.cpp rocket.cpp population.cpp dna.cpp target.cpp
 OBJ := $(SRC:.cpp=.o)
 
 $(TARGET): $(OBJ)

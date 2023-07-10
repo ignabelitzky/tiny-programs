@@ -3,29 +3,31 @@
 Population::Population(int size) {
     for(int i = 0; i < size; ++i) {
         Rocket rocket;
-        rockets.push_back(rocket);
+        m_rockets.push_back(rocket);
     }
 }
 
 Population::~Population() {
+    m_rockets.clear();
+    m_matingPool.clear();
 }
 
 void Population::evaluate(sf::Vector2f targetPos) {
     float maxFit = 0.0f;
-    for(size_t i = 0; i < this->rockets.size(); ++i) {
-        this->rockets[i].calcFitness(targetPos);
-        if(this->rockets[i].getFitness() > maxFit) {
-            maxFit = this->rockets[i].getFitness();
+    for(size_t i = 0; i < m_rockets.size(); ++i) {
+        m_rockets[i].calcFitness(targetPos);
+        if(m_rockets[i].getFitness() > maxFit) {
+            maxFit = m_rockets[i].getFitness();
         }
     }
-    for(size_t i = 0; i < this->rockets.size(); ++i) {
-        this->rockets[i].setFitness(this->rockets[i].getFitness() / maxFit);
+    for(size_t i = 0; i < m_rockets.size(); ++i) {
+        m_rockets[i].setFitness(m_rockets[i].getFitness() / maxFit);
     }
-    this->matingPool.clear();
-    for(size_t i = 0; i < this->rockets.size(); ++i) {
-        float n = this->rockets[i].getFitness() * 100;
+    m_matingPool.clear();
+    for(size_t i = 0; i < m_rockets.size(); ++i) {
+        float n = m_rockets[i].getFitness() * 100;
         for(size_t j = 0; j < n; ++j) {
-            this->matingPool.push_back(this->rockets[i]);
+            m_matingPool.push_back(m_rockets[i]);
         }
     }
 }
@@ -42,24 +44,24 @@ static T getRandomElement(const std::vector<T>& vec)
 }
 
 void Population::selection() {
-    std::vector<Rocket> newRockets;
-    for(size_t i = 0; i < this->rockets.size(); ++i) {
-        DNA parentA = getRandomElement(this->matingPool).getDNA();
-        DNA parentB = getRandomElement(this->matingPool).getDNA();
+    size_t n = m_rockets.size();
+    m_rockets.clear();
+    for(size_t i = 0; i < n; ++i) {
+        DNA parentA = getRandomElement(m_matingPool).getDNA();
+        DNA parentB = getRandomElement(m_matingPool).getDNA();
         DNA child = parentA.crossover(parentB);
         child.mutation();
-        newRockets.push_back(Rocket(child));
+        m_rockets.push_back(Rocket(child));
     }
-    this->rockets = newRockets;
 }
 
 void Population::run(sf::RenderWindow& window, sf::Vector2f targetPos) {
-    for(size_t i = 0; i < this->rockets.size(); ++i) {
-        this->rockets[i].update(targetPos);
-        this->rockets[i].show(window);
+    for(size_t i = 0; i < m_rockets.size(); ++i) {
+        m_rockets[i].update(targetPos);
+        m_rockets[i].show(window);
     }
 }
 
 int Population::size() {
-    return this->rockets.size();
+    return m_rockets.size();
 }

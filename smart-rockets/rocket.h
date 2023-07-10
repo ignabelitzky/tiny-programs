@@ -17,11 +17,8 @@ class Rocket {
         DNA getDNA();
         float getFitness();
         void setFitness(float f);
-        sf::Texture getTexture();
-        void setTexture(sf::Texture texture);
     private:
         sf::RectangleShape m_rocket;
-        sf::Texture m_texture;
         sf::Vector2f m_position;
         sf::Vector2f m_velocity;
         sf::Vector2f m_acceleration;

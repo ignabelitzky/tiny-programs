@@ -45,6 +45,7 @@ DNA::DNA(std::vector<sf::Vector2f> genes) {
 }
 
 DNA::~DNA() {
+    genes.clear();
 }
 
 sf::Vector2f DNA::getGene(int index) {
