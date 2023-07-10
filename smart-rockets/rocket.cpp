@@ -27,89 +27,101 @@ static float calculateAngleDirection(const sf::Vector2f& vector) {
 }
 
 Rocket::Rocket() {
-    this->position = sf::Vector2f(width/2.0f, height - 10.0f);
-    this->velocity = sf::Vector2f(0.0f, 0.0f);
-    this->acceleration = sf::Vector2f(0.0f, 0.0f);
-    this->rotationAngle = 0.0f;
-    this->fitness = 0.0f;
-    this->completed = false;
-    this->crashed = false;
+    m_texture.loadFromFile("./resources/images/rocket.png");
+    m_position = sf::Vector2f(width/2.0f, height - 10.0f);
+    m_rocket.setPosition(m_position);
+    m_velocity = sf::Vector2f(0.0f, 0.0f);
+    m_acceleration = sf::Vector2f(0.0f, 0.0f);
+    m_rotationAngle = 0.0f;
+    m_fitness = 0.0f;
+    m_completed = false;
+    m_crashed = false;
 }
 
 Rocket::Rocket(DNA d) {
-    this->position = sf::Vector2f(width/2.0f, height - 10.0f);
-    this->velocity = sf::Vector2f(0.0f, 0.0f);
-    this->acceleration = sf::Vector2f(0.0f, 0.0f);
-    this->rotationAngle = 0.0f;
-    this->fitness = 0.0f;
-    this->dna = d;
-    this->completed = false;
-    this->crashed = false;
+    m_texture.loadFromFile("./resources/images/rocket.png");
+    m_position = sf::Vector2f(width/2.0f, height - 10.0f);
+    m_rocket.setPosition(m_position);
+    m_velocity = sf::Vector2f(0.0f, 0.0f);
+    m_acceleration = sf::Vector2f(0.0f, 0.0f);
+    m_rotationAngle = 0.0f;
+    m_fitness = 0.0f;
+    m_dna = d;
+    m_completed = false;
+    m_crashed = false;
 }
 
 Rocket::~Rocket() {
 }
 
 void Rocket::applyForce(sf::Vector2f force) {
-    this->acceleration += force;
+    m_acceleration += force;
 }
 
 void Rocket::calcFitness(sf::Vector2f targetPos) {
-    float deltaX = targetPos.x - this->position.x;
-    float deltaY = targetPos.y - this->position.y;
+    float deltaX = targetPos.x - m_position.x;
+    float deltaY = targetPos.y - m_position.y;
     float d = std::sqrt(deltaX * deltaX + deltaY * deltaY);
-    this->fitness = map(d, 0.0f, width, width, 0.0f);
-    if(this->completed) {
-        this->fitness *= 10.0f;
+    m_fitness = map(d, 0.0f, width, width, 0.0f);
+    if(m_completed) {
+        m_fitness *= 10.0f;
     }
-    if(this->crashed && !this->completed) {
-        this->fitness /= 10;
+    if(m_crashed && !m_completed) {
+        m_fitness /= 10;
     }
 }
 
 void Rocket::update(sf::Vector2f targetPos) {
-    float deltaX = targetPos.x - this->position.x;
-    float deltaY = targetPos.y - this->position.y;
+    float deltaX = targetPos.x - m_position.x;
+    float deltaY = targetPos.y - m_position.y;
     float d = std::sqrt(deltaX * deltaX + deltaY * deltaY);
     if(d < 10) {
-        if(!this->completed) {
+        if(!m_completed) {
             ++reached;
         }
-        this->completed = true;
-        this->position = targetPos;
+        m_completed = true;
+        m_position = targetPos;
     }
-    if(this->position.x > width || this->position.x < 0) {
-        this->crashed = true;
+    if(m_position.x > width || m_position.x < 0) {
+        m_crashed = true;
     }
-    if(this->position.y < 0 || this->position.y > height) {
-        this->crashed = true;
+    if(m_position.y < 0 || m_position.y > height) {
+        m_crashed = true;
     }
-    this->applyForce(this->dna.getGene(count));
-    if(!this->completed && !this->crashed) {
-        this->velocity += this->acceleration;
-        this->position += this->velocity;
-        this->acceleration = sf::Vector2f(0.0f, 0.0f);
-        this->rotationAngle = calculateAngleDirection(this->velocity);
+    this->applyForce(m_dna.getGene(count));
+    if(!m_completed && !m_crashed) {
+        m_velocity += m_acceleration;
+        m_position += m_velocity;
+        m_acceleration = sf::Vector2f(0.0f, 0.0f);
+        m_rotationAngle = calculateAngleDirection(m_velocity);
     }
 }
 
 void Rocket::show(sf::RenderWindow& window) {
-    sf::RectangleShape rocket(sf::Vector2f(25, 5));
-    rocket.setFillColor(sf::Color::White);
-    rocket.setOrigin(rocket.getSize() / 2.0f);
-    rocket.setRotation(this->rotationAngle);
-    rocket.setPosition(this->position.x, this->position.y);
-    window.draw(rocket);
+    m_rocket.setSize(sf::Vector2f(30, 10));
+    m_rocket.setTexture(&m_texture);
+    m_rocket.setOrigin(m_rocket.getSize() / 2.0f);
+    m_rocket.setRotation(m_rotationAngle);
+    m_rocket.setPosition(m_position.x, m_position.y);
+    window.draw(m_rocket);
 }
 
 float Rocket::getFitness() {
-    return this->fitness;
+    return m_fitness;
 }
 
 void Rocket::setFitness(float f) {
-    this->fitness = f;
+    m_fitness = f;
 }
 
 DNA Rocket::getDNA() {
-    return this->dna;
+    return m_dna;
+}
+
+sf::Texture Rocket::getTexture() {
+    return m_texture;
+}
+
+void Rocket::setTexture(sf::Texture texture) {
+    m_texture = texture;
 }

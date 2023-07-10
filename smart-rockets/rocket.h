@@ -17,13 +17,17 @@ class Rocket {
         DNA getDNA();
         float getFitness();
         void setFitness(float f);
+        sf::Texture getTexture();
+        void setTexture(sf::Texture texture);
     private:
-        sf::Vector2f position;
-        sf::Vector2f velocity;
-        sf::Vector2f acceleration;
-        float rotationAngle;
-        float fitness;
-        DNA dna;
-        bool completed;
-        bool crashed;
+        sf::RectangleShape m_rocket;
+        sf::Texture m_texture;
+        sf::Vector2f m_position;
+        sf::Vector2f m_velocity;
+        sf::Vector2f m_acceleration;
+        float m_rotationAngle;
+        float m_fitness;
+        DNA m_dna;
+        bool m_completed;
+        bool m_crashed;
 };

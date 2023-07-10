@@ -15,17 +15,20 @@ int main() {
 
     // Creating the target circle shape
     sf::CircleShape target(radius);
+    sf::Texture t;
+    t.loadFromFile("./resources/images/bull_eye.png");
+    target.setTexture(&t);
     target.setFillColor(sf::Color::Red);
     target.setOrigin(radius, radius);
     target.setPosition(width / 2.0f, radius + 10);
 
     // Creating the population of rockets
-    Population population(200);
+    Population population(50);
 
     // Setting up the text for displaying reached rocket count
     sf::Text text;
     sf::Font font;
-    if(!font.loadFromFile("./arial/arial.ttf")) {
+    if(!font.loadFromFile("./resources/fonts/arial/arial.ttf")) {
         std::cout << "Failed to load font!" << std::endl;
         return 1;
     }
