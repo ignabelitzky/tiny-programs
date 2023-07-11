@@ -1,29 +1,27 @@
 #include "pipe.h"
 
 Pipe::Pipe(sf::Vector2f position) {
+    m_texture.loadFromFile("./resources/images/pipe.png");
     m_width = getRandomInt(minPipeWidth, maxPipeWidth);
     m_height = getRandomInt(minPipeHeight, maxPipeHeight);
     m_position = position;
     m_hitColor = sf::Color::Red;
-    m_defaultColor = sf::Color(138, 43, 226);
     m_position.y += m_height / 2;
     m_pipe.setSize(sf::Vector2f(m_width, m_height));
     m_pipe.setOrigin(m_width/2, m_height/2);
     m_pipe.setPosition(m_position); 
-    m_pipe.setFillColor(m_defaultColor);
     m_speed = 0.f;
 }
 
 Pipe::Pipe(float width, float height, sf::Vector2f position) {
+    m_texture.loadFromFile("./resources/images/pipe.png");
     m_width = width;
     m_height = height;
     m_position = position;
     m_hitColor = sf::Color::Red;
-    m_defaultColor = sf::Color(138, 43, 226);
     m_pipe.setSize(sf::Vector2f(m_width, m_height));
     m_pipe.setPosition(m_position);
     m_pipe.setOrigin(m_width/2, m_height/2);
-    m_pipe.setFillColor(m_defaultColor);
     m_speed = 0.f;
 }
 
@@ -36,6 +34,7 @@ void Pipe::update() {
 }
 
 void Pipe::show(sf::RenderWindow& window) {
+    m_pipe.setTexture(&m_texture);
     window.draw(m_pipe);
 }
 
@@ -51,14 +50,13 @@ bool Pipe::isOffscreen() {
     return (m_position.x < (-m_width/2.f));
 }
 
-bool Pipe::hit(Bird& bird) {
-    sf::Vector2f birdPosition = bird.getPosition();
-    if(birdPosition.x > m_position.x - (m_width/2)  && birdPosition.x < m_position.x + (m_width/2)) {
-        if(birdPosition.y < m_height) {
+bool Pipe::hit(Helicopter& helicopter) {
+    sf::Vector2f helicopterPosition = helicopter.getPosition();
+    if(helicopterPosition.x > m_position.x - (m_width/2)  && helicopterPosition.x < m_position.x + (m_width/2)) {
+        if(helicopterPosition.y < m_height) {
             m_pipe.setFillColor(m_hitColor);
             return true;
         }
     }
-    m_pipe.setFillColor(m_defaultColor);
     return false;
 }

@@ -3,7 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include "params.h"
 #include "helper.h"
-#include "bird.h"
+#include "helicopter.h"
 
 class Pipe {
     public:
@@ -15,13 +15,13 @@ class Pipe {
         void setPosition(sf::Vector2f position);
         sf::Vector2f getPosition();
         bool isOffscreen();
-        bool hit(Bird& bird);
+        bool hit(Helicopter& helicopter);
     private:
         sf::RectangleShape m_pipe;
+        sf::Texture m_texture;
         sf::Vector2f m_position;
         float m_speed;
         float m_width;
         float m_height;
-        sf::Color m_defaultColor;
         sf::Color m_hitColor;
 };

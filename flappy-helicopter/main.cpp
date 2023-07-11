@@ -2,11 +2,11 @@
 #include <SFML/Graphics.hpp>
 #include "params.h"
 #include "helper.h"
-#include "bird.h"
+#include "helicopter.h"
 #include "pipe.h"
 
 int main() {
-    sf::RenderWindow window(sf::VideoMode(width, height), "Flappy Bird");
+    sf::RenderWindow window(sf::VideoMode(width, height), "Flappy Helicopter");
     window.setVerticalSyncEnabled(true);
 
     bool gameOver = false;
@@ -14,7 +14,7 @@ int main() {
     int maxScore = retrieveMaxScore();
 
     sf::Font font;
-    if(!font.loadFromFile("fonts/arial.ttf")) {
+    if(!font.loadFromFile("./resources/fonts/arial.ttf")) {
         std::cerr << "Couldn't load the font.\n";
         return 1;
     }
@@ -44,14 +44,14 @@ int main() {
     // Time to generate new pipe
     float limitSecond = getRandomFloat(1.f, 2.f);
     
-    // Bird start position
-    sf::Vector2f birdPosition(birdStartPositionX, birdStartPositionY);
+    // Helicopter start position
+    sf::Vector2f helicopterPosition(helicopterStartPositionX, helicopterStartPositionY);
 
     // Pipe start position
     sf::Vector2f pipePosition(pipeStartPositionX, pipeStartPositionY);
      
     
-    Bird bird(birdRadius, birdPosition);
+    Helicopter helicopter(helicopterRadius, helicopterPosition);
     std::vector<Pipe> pipes;
 
     while(window.isOpen()) {
@@ -80,11 +80,11 @@ int main() {
             }
 
             if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
-                bird.up();
+                helicopter.up();
             }
 
-            bird.update();
-            if(!bird.isAlive()) {
+            helicopter.update();
+            if(!helicopter.isAlive()) {
                 gameOver = true;
             }
 
@@ -95,14 +95,14 @@ int main() {
                     ++score;
                     scoreText.setString("Score: " + std::to_string(score));
                 } else {
-                    if(it->hit(bird)) {
+                    if(it->hit(helicopter)) {
                         gameOver = true;
                     }
                     it->show(window);
                     ++it;
                 }
             }
-            bird.show(window);
+            helicopter.show(window);
             window.draw(scoreText);
         } else {
             if(score > maxScore) {
@@ -118,9 +118,9 @@ int main() {
                 gameOver = false;
                 score = 0;
                 scoreText.setString("Score: " + std::to_string(score));
-                bird.setPosition(sf::Vector2f(birdStartPositionX, birdStartPositionY));
-                bird.revive();
-                bird.show(window);
+                helicopter.setPosition(sf::Vector2f(helicopterStartPositionX, helicopterStartPositionY));
+                helicopter.revive();
+                helicopter.show(window);
                 pipes.clear();
             }
             gameoverText.setString("Your score: " + std::to_string(score) +

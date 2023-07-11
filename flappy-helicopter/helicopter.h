@@ -3,10 +3,10 @@
 #include <SFML/Graphics.hpp>
 #include "params.h"
 
-class Bird {
+class Helicopter {
     public:
-        Bird(int radius, sf::Vector2f position);
-        ~Bird();
+        Helicopter(int radius, sf::Vector2f position);
+        ~Helicopter();
         void up();
         void update();
         void show(sf::RenderWindow& window);
@@ -15,8 +15,8 @@ class Bird {
         bool isAlive();
         void revive();
     private:
-        sf::CircleShape m_bird;
-        sf::Color m_color;
+        sf::CircleShape m_helicopter;
+        sf::Texture m_texture;
         sf::Vector2f m_position;
         int m_radius;
         float m_gravity;
