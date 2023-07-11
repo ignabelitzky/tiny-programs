@@ -74,7 +74,7 @@ void Rocket::update(sf::Vector2f targetPos) {
     float deltaX = targetPos.x - m_position.x;
     float deltaY = targetPos.y - m_position.y;
     float d = std::sqrt(deltaX * deltaX + deltaY * deltaY);
-    if(d < 15) {
+    if(d < targetRadius) {
         if(!m_completed) {
             ++reached;
         }
