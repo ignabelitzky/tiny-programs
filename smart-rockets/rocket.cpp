@@ -33,9 +33,8 @@ Rocket::Rocket() {
     m_velocity = sf::Vector2f(0.0f, 0.0f);
     m_acceleration = sf::Vector2f(0.0f, 0.0f);
     m_rotationAngle = 0.0f;
-    m_fitness = 0.0f;
+    m_fitness = 1.1f;
     m_completed = false;
-    m_crashed = false;
 }
 
 Rocket::Rocket(DNA d) {
@@ -44,10 +43,9 @@ Rocket::Rocket(DNA d) {
     m_velocity = sf::Vector2f(0.0f, 0.0f);
     m_acceleration = sf::Vector2f(0.0f, 0.0f);
     m_rotationAngle = 0.0f;
-    m_fitness = 0.0f;
+    m_fitness = 1.1f;
     m_dna = d;
     m_completed = false;
-    m_crashed = false;
 }
 
 Rocket::~Rocket() {
@@ -63,10 +61,9 @@ void Rocket::calcFitness(sf::Vector2f targetPos) {
     float d = std::sqrt(deltaX * deltaX + deltaY * deltaY);
     m_fitness = map(d, 0.0f, width, width, 0.0f);
     if(m_completed) {
-        m_fitness *= 10;
-    }
-    if(m_crashed && !m_completed) {
-        m_fitness /= 10;
+        m_fitness = std::pow(m_fitness, 4);
+    } else {
+        m_fitness = 1.1f;
     }
 }
 
@@ -81,16 +78,8 @@ void Rocket::update(sf::Vector2f targetPos) {
         m_completed = true;
         m_position = targetPos;
     }
-    /* Check the walls
-    if(m_position.x > width || m_position.x < 0) {
-        m_crashed = true;
-    }
-    if(m_position.y < 0 || m_position.y > height) {
-        m_crashed = true;
-    }
-    */
     this->applyForce(m_dna.getGene(count));
-    if(!m_completed && !m_crashed) {
+    if(!m_completed) {
         m_velocity += m_acceleration;
         m_position += m_velocity;
         m_acceleration = sf::Vector2f(0.0f, 0.0f);

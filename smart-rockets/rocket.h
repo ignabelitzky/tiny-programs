@@ -26,5 +26,4 @@ class Rocket {
         float m_fitness;
         DNA m_dna;
         bool m_completed;
-        bool m_crashed;
 };
