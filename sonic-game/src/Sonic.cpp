@@ -1,36 +1,19 @@
 #include "Sonic.hpp"
 
 Sonic::Sonic(sf::Vector2f position, float groundLevel, float skyLevel) :
-        m_velocity(0.0f, 0.0f), m_isJumping(false), m_jumpSpeed(80.0f),
-        m_groundLevel(groundLevel), m_skyLevel(skyLevel), m_bounceFactor(0.5f),
+        m_velocity(0.0f, 0.0f), m_isJumping(false), m_jumpSpeed(jumpSpeed),
+        m_groundLevel(groundLevel), m_skyLevel(skyLevel), m_bounceFactor(bounceFactor),
         m_runIndex(0) {
-    float radius = 50.0f;
     m_shape.setPosition(position);
-    m_shape.setRadius(radius);
-    m_shape.setOrigin(radius, radius);
+    m_shape.setRadius(sonicRadius);
+    m_shape.setOrigin(sonicRadius, sonicRadius);
 
-    // Load of jump sprites
-    for(int i = 1; i <= 8; ++i) {
-        sf::Texture texture;
-        std::string filename = "./assets/sprites/jump" + std::to_string(i) + ".png";
-        if(!texture.loadFromFile(filename)) {
-            std::cout << "Failed to load " << filename << std::endl;
-        }
-        m_jumpTextures.push_back(texture);
-    }
+    // Loading of textures
+    loadTextures();
 
-    // Load of run sprites
-    for(int  i = 1; i <= 16; ++i) {
-        sf::Texture texture;
-        std::string filename = "./assets/sprites/run" + std::to_string(i) + ".png";
-        if(!texture.loadFromFile(filename)) {
-            std::cout << "Failed to load " << filename << std::endl;
-        }
-        m_runTextures.push_back(texture);
-    }
-    m_shape.setTexture(&m_runTextures.at(0));
+    m_shape.setTexture(&m_runTextures.at(m_runIndex));
 
-    m_frameDuration = sf::seconds(0.08f);
+    m_frameDuration = sf::seconds(frameDuration);
     m_elapsed = m_clock.getElapsedTime();
 }
 
@@ -40,7 +23,7 @@ void Sonic::update(float deltaTime) {
         m_isJumping = false;
     }
     // Apply gravity to the player's velocity
-    m_velocity.y += 9.8f * deltaTime;
+    m_velocity.y += sonicGravity * deltaTime;
 
     // Update player position based on velocity
     m_shape.move(m_velocity * deltaTime);
@@ -66,11 +49,7 @@ void Sonic::update(float deltaTime) {
     m_elapsed = m_clock.getElapsedTime();
     if(m_elapsed >= m_frameDuration) {
         m_clock.restart();
-        if(m_runIndex != m_runTextures.size()-1) {
-            ++m_runIndex;
-        } else {
-            m_runIndex = 0;
-        }
+        m_runIndex = (m_runIndex != m_runTextures.size()-1) ? m_runIndex + 1 : 0;
         m_shape.setTexture(&m_runTextures.at(m_runIndex));
     }
 }
@@ -83,3 +62,26 @@ void Sonic::jump() {
 sf::CircleShape Sonic::getShape() {
     return m_shape;
 }
+
+void Sonic::loadTextures() {
+    // Load of jump textures
+    for(int i = 1; i <= jumpSpritesCount; ++i) {
+        sf::Texture texture;
+        std::string filename = "./assets/sprites/jump" + std::to_string(i) + ".png";
+        if(!texture.loadFromFile(filename)) {
+            std::cout << "Failed to load " << filename << std::endl;
+        }
+        m_jumpTextures.push_back(texture);
+    }
+
+    // Load of run textures
+    for(int  i = 1; i <= runSpritesCount; ++i) {
+        sf::Texture texture;
+        std::string filename = "./assets/sprites/run" + std::to_string(i) + ".png";
+        if(!texture.loadFromFile(filename)) {
+            std::cout << "Failed to load " << filename << std::endl;
+        }
+        m_runTextures.push_back(texture);
+    }
+}
+

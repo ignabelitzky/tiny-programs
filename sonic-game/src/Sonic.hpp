@@ -2,6 +2,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include "params.hpp"
 
 class Sonic {
     public:
@@ -22,6 +23,7 @@ class Sonic {
         std::vector<sf::Texture> m_runTextures;
         size_t m_runIndex;
         std::vector<sf::Texture> m_jumpTextures;
+        void loadTextures();
         sf::Clock m_clock;
         sf::Time m_elapsed;
         sf::Time m_frameDuration;
