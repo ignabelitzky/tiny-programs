@@ -3,7 +3,7 @@
 GameManager::GameManager() : m_window(sf::VideoMode(windowWidth, windowHeight), "Sonic"), m_isRunning(true),
     m_player(sf::Vector2f(sonicXPos, sonicYPos), groundLevel, skyLevel) {
     m_window.setVerticalSyncEnabled(true);
-    m_enemies.push_back(Enemy(sf::Vector2f(windowWidth, windowHeight-50)));
+    m_enemies.push_back(Enemy(sf::Vector2f(windowWidth, windowHeight-75)));
 }
 
 void GameManager::run() {

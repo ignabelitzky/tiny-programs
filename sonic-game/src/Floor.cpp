@@ -9,7 +9,7 @@ Floor::Floor() {
 
     float spriteWidth = s.getGlobalBounds().width;
 
-    for(int i = 1; i <= std::ceil(windowWidth/spriteWidth); ++i) {
+    for(int i = 1; i <= std::ceil(windowWidth/spriteWidth)*2; ++i) {
         sf::Sprite sprite(m_texture);
         sprite.setPosition(m_floorSprites.at(i-1).getPosition().x + m_floorSprites.at(i-1).getGlobalBounds().width,
                            windowHeight - sprite.getGlobalBounds().height);
