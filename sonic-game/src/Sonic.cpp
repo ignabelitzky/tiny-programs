@@ -1,7 +1,7 @@
 #include "Sonic.hpp"
 
 Sonic::Sonic(sf::Vector2f position, float groundLevel, float skyLevel) :
-        m_velocity(0.0f, 0.0f), m_isJumping(false), m_jumpSpeed(100.0f),
+        m_velocity(0.0f, 0.0f), m_isJumping(false), m_jumpSpeed(80.0f),
         m_groundLevel(groundLevel), m_skyLevel(skyLevel), m_bounceFactor(0.5f),
         m_runIndex(0) {
     float radius = 50.0f;
@@ -29,12 +29,7 @@ Sonic::Sonic(sf::Vector2f position, float groundLevel, float skyLevel) :
         m_runTextures.push_back(texture);
     }
     m_shape.setTexture(&m_runTextures.at(0));
-    //float scaleX = m_shape.getRadius() * 2.0f / m_runTextures.at(0).getSize().x;
-    //float scaleY = m_shape.getRadius() * 2.0f / m_runTextures.at(0).getSize().y;
-    float scaleX = 1.3f;
-    float scaleY = 1.3f;
-    sf::IntRect textureRect(0, 0, m_runTextures.at(0).getSize().x * scaleX, m_runTextures.at(0).getSize().y * scaleY);
-    m_shape.setTextureRect(textureRect);
+
     m_frameDuration = sf::seconds(0.08f);
     m_elapsed = m_clock.getElapsedTime();
 }
