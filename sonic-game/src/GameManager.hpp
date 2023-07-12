@@ -12,6 +12,9 @@ class GameManager {
         sf::RenderWindow m_window;
         bool m_isRunning;
         Sonic m_player;
+        sf::Clock m_clock;
+        sf::Time m_elapsed;
+        sf::Time m_frameDuration;
 
         void processEvents();
         void update();
