@@ -4,6 +4,7 @@
 #include "params.hpp"
 #include "Sonic.hpp"
 #include "Floor.hpp"
+#include "Enemy.hpp"
 
 class GameManager {
     public:
@@ -14,6 +15,7 @@ class GameManager {
         bool m_isRunning;
         Sonic m_player;
         Floor m_floor;
+        std::vector<Enemy> m_enemies;
         sf::Clock m_clock;
         sf::Time m_elapsed;
         sf::Time m_frameDuration;

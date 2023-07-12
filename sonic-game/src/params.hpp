@@ -19,3 +19,8 @@ constexpr float frameDuration = 0.08f;
 constexpr int groundLevel = windowHeight-50;
 constexpr int skyLevel = 100;
 constexpr float floorSpeed = 10.0f;
+
+// Enemy
+constexpr float enemyRadius = 50.0f;
+constexpr float enemyVelocity = floorSpeed;
+constexpr int enemySpritesCount = 5;
