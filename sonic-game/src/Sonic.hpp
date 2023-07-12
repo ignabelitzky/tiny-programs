@@ -9,13 +9,10 @@ class Sonic {
 
         void update(float deltaTime);
         void jump();
-        sf::RectangleShape getShape();
-        sf::Sprite getSprite();
-        void applyNextRunSprite();
+        sf::CircleShape getShape();
 
     private:
-        sf::RectangleShape m_shape;
-        sf::Sprite m_sprite;
+        sf::CircleShape m_shape;
         sf::Vector2f m_velocity;
         bool m_isJumping;
         float m_jumpSpeed;
@@ -25,4 +22,7 @@ class Sonic {
         std::vector<sf::Texture> m_runTextures;
         size_t m_runIndex;
         std::vector<sf::Texture> m_jumpTextures;
+        sf::Clock m_clock;
+        sf::Time m_elapsed;
+        sf::Time m_frameDuration;
 };

@@ -3,8 +3,6 @@
 GameManager::GameManager() : m_window(sf::VideoMode(windowWidth, windowHeight), "Sonic"), m_isRunning(true),
     m_player(sf::Vector2f(sonicXPos, sonicYPos), groundLevel, skyLevel) {
     m_window.setVerticalSyncEnabled(true);
-    m_frameDuration = sf::seconds(0.08f);
-    m_elapsed = m_clock.getElapsedTime();
 }
 
 void GameManager::run() {
@@ -31,17 +29,10 @@ void GameManager::processEvents() {
 void GameManager::update() {
     // Update game logic here
     m_player.update(0.5);
-
-    m_elapsed = m_clock.getElapsedTime();
-    if(m_elapsed >= m_frameDuration) {
-        m_clock.restart();
-        m_player.applyNextRunSprite();
-    }
 }
 
 void GameManager::render() {
     m_window.clear();
     m_window.draw(m_player.getShape());
-    m_window.draw(m_player.getSprite());
     m_window.display();
 }
