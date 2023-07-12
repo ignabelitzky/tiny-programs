@@ -1,8 +1,8 @@
 #include "GameManager.hpp"
 
-GameManager::GameManager() : m_window(sf::VideoMode(windowWidth, windowHeight), "Sonic"), m_isRunning(true) {
+GameManager::GameManager() : m_window(sf::VideoMode(windowWidth, windowHeight), "Sonic"), m_isRunning(true),
+    m_player(sf::Vector2f(midWidth, midHeight), groundLevel, skyLevel) {
     m_window.setVerticalSyncEnabled(true);
-    // Additional initialization code goes here
 }
 
 void GameManager::run() {
@@ -19,15 +19,20 @@ void GameManager::processEvents() {
     while(m_window.pollEvent(event)) {
         if(event.type == sf::Event::Closed)
             m_isRunning = false;
+        if(event.type == sf::Event::KeyPressed) {
+            if(event.key.code == sf::Keyboard::Up)
+                m_player.jump();
+        }
     }
 }
 
 void GameManager::update() {
     // Update game logic here
+    m_player.update(0.064f);
 }
 
 void GameManager::render() {
     m_window.clear();
-    // Render game object here
+    m_window.draw(m_player.getShape());
     m_window.display();
 }
