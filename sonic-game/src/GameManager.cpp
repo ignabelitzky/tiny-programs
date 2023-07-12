@@ -28,11 +28,16 @@ void GameManager::processEvents() {
 
 void GameManager::update() {
     // Update game logic here
-    m_player.update(0.5);
+    m_player.update(0.5f);
+    m_floor.update(0.5f);
 }
 
 void GameManager::render() {
     m_window.clear();
+    std::vector<sf::Sprite> floor = m_floor.getSprites();
+    for(size_t i = 0; i < floor.size(); ++i) {
+        m_window.draw(floor.at(i));
+    }
     m_window.draw(m_player.getShape());
     m_window.display();
 }
