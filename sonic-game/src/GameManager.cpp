@@ -41,6 +41,8 @@ GameManager::GameManager() : m_window(sf::VideoMode(windowWidth, windowHeight), 
 
     m_maxScore = retrieveMaxScore();
     m_limitSeconds = getRandomFloat(1.f, 2.f);
+
+    m_cloudLimitSeconds = getRandomFloat(0.f, 2.f);
 }
 
 GameManager::~GameManager() {
@@ -119,6 +121,21 @@ void GameManager::updateMenu() {
 
 // Update game logic here
 void GameManager::updatePlaying() {
+    m_cloudElapsed = m_cloudClock.getElapsedTime();
+    if(m_cloudElapsed.asSeconds() >= m_cloudLimitSeconds) {
+        Cloud c(sf::Vector2f(windowWidth * 2, getRandomFloat(0.5f, windowHeight / 2.0f)));
+        m_clouds.push_back(c);
+        m_cloudClock.restart();
+        m_cloudLimitSeconds = getRandomFloat(0.5f, 2.0f);
+    }
+    for(size_t i = 0; i < m_clouds.size(); ++i) {
+        m_clouds.at(i).update(0.5f);
+        if(m_clouds.at(i).getPosition().x < -50.f) {
+            m_clouds.erase(m_clouds.begin() + i);
+            --i;
+        }
+    }
+
     m_enemyElapsed = m_enemyClock.getElapsedTime();
     if(m_enemyElapsed.asSeconds() >= m_limitSeconds) {
         Enemy enemy(sf::Vector2f(windowWidth + (enemyRadius*2), windowHeight-75));
@@ -191,6 +208,9 @@ void GameManager::render() {
         m_scoreText.setString("HI: " + std::to_string(m_maxScore) + "\tScore: " + std::to_string(m_score));
         m_scoreText.setPosition(10, 10);
         std::vector<sf::Sprite> floor = m_floor.getSprites();
+        for(size_t i = 0; i < m_clouds.size(); ++i) {
+            m_window.draw(m_clouds.at(i).getShape());
+        }
         for(size_t i = 0; i < floor.size(); ++i) {
             m_window.draw(floor.at(i));
         }

@@ -7,6 +7,7 @@
 #include "Sonic.hpp"
 #include "Floor.hpp"
 #include "Enemy.hpp"
+#include "Cloud.hpp"
 
 enum class GameState {
     MENU,
@@ -30,6 +31,11 @@ class GameManager {
         int m_lives;
         Floor m_floor;
         std::vector<Enemy> m_enemies;
+        std::vector<Cloud> m_clouds;
+
+        sf::Clock m_cloudClock;
+        sf::Time m_cloudElapsed;
+        float m_cloudLimitSeconds;
 
         sf::Clock m_clock;
         sf::Time m_elapsed;
