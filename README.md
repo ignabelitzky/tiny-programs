@@ -19,7 +19,7 @@ Execute the executables through the Linux Terminal.
 
 ## Videos
 
-You can find video demonstrations of the project below:
+You can find video demonstrations of some of the projects below:
 
 ### Sonic game
 
