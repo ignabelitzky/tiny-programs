@@ -2,7 +2,9 @@
 
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include <cmath>
 #include "params.hpp"
+#include "Enemy.hpp"
 
 class Sonic {
     public:
@@ -11,6 +13,8 @@ class Sonic {
         void update(float deltaTime);
         void jump();
         sf::CircleShape getShape();
+        sf::Vector2f getPosition();
+        bool collidesWith(Enemy enemy);
 
     private:
         sf::CircleShape m_shape;

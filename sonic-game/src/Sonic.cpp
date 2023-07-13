@@ -63,6 +63,23 @@ sf::CircleShape Sonic::getShape() {
     return m_shape;
 }
 
+sf::Vector2f Sonic::getPosition() {
+    return m_shape.getPosition();
+}
+
+bool Sonic::collidesWith(Enemy enemy) {
+    sf::Vector2f pos1 = m_shape.getPosition();
+    sf::Vector2f pos2 = enemy.getPosition();
+
+    float dx = pos2.x - pos1.x;
+    float dy = pos2.y - pos1.y;
+    float distance = std::sqrt(dx * dx + dy * dy);
+
+    float radiusSum = m_shape.getRadius() + enemy.getRadius();
+
+    return distance < radiusSum;
+}
+
 void Sonic::loadTextures() {
     // Load of jump textures
     for(int i = 1; i <= jumpSpritesCount; ++i) {

@@ -1,6 +1,7 @@
 #include "Enemy.hpp"
 
-Enemy::Enemy(sf::Vector2f position) : m_velocity(0.0f, 0.0f), m_textureIndex(0) {
+Enemy::Enemy(sf::Vector2f position) :
+        m_velocity(0.0f, 0.0f), m_textureIndex(0), m_passed(false) {
     m_shape.setPosition(position);
     m_shape.setRadius(enemyRadius);
     m_shape.setOrigin(enemyRadius, enemyRadius);
@@ -15,11 +16,7 @@ Enemy::Enemy(sf::Vector2f position) : m_velocity(0.0f, 0.0f), m_textureIndex(0) 
 
 void Enemy::update(float deltaTime) {
     m_velocity.x = -enemyVelocity * deltaTime;
-    //m_shape.move(m_velocity * deltaTime);
     m_shape.move(m_velocity);
-    if(m_shape.getPosition().x < 0) {
-        m_shape.setPosition(windowWidth, m_shape.getPosition().y);
-    }
     m_elapsed = m_clock.getElapsedTime();
     if(m_elapsed >= m_frameDuration) {
         m_clock.restart();
@@ -30,6 +27,22 @@ void Enemy::update(float deltaTime) {
 
 sf::CircleShape Enemy::getShape() {
     return m_shape;
+}
+
+sf::Vector2f Enemy::getPosition() {
+    return m_shape.getPosition();
+}
+
+float Enemy::getRadius() {
+    return m_shape.getRadius();
+}
+
+bool Enemy::isPassed() {
+    return m_passed;
+}
+
+void Enemy::setPassed(bool value) {
+    m_passed = value;
 }
 
 void Enemy::loadTextures() {
