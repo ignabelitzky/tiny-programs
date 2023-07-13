@@ -1,8 +1,8 @@
 #pragma once
 
 // Window
-constexpr int windowWidth = 1600;
-constexpr int windowHeight = 900;
+constexpr int windowWidth = 1920;
+constexpr int windowHeight = 1000;
 
 // Sonic
 constexpr int sonicXPos = 200;

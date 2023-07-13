@@ -1,6 +1,6 @@
 CXX := g++
 CXXFLAGS := -O2 -march=native -Wall -Werror -Wextra -pedantic -std=c++23
-SFML_LIBS := -lsfml-graphics -lsfml-window -lsfml-system
+SFML_LIBS := -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
 
 # Directories
 SRC_DIR := src
