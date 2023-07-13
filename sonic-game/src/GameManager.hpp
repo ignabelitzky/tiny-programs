@@ -27,6 +27,7 @@ class GameManager {
         sf::Music m_backgroundMusic;
 
         Sonic m_player;
+        int m_lives;
         Floor m_floor;
         std::vector<Enemy> m_enemies;
 

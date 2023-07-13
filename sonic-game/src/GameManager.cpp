@@ -1,8 +1,8 @@
 #include "GameManager.hpp"
 
 GameManager::GameManager() : m_window(sf::VideoMode(windowWidth, windowHeight), "Sonic"), m_isRunning(true),
-    m_gameState(GameState::MENU), m_player(sf::Vector2f(sonicXPos, sonicYPos), groundLevel, skyLevel),
-    m_score(0), m_selectedOption(0) {
+        m_gameState(GameState::MENU), m_player(sf::Vector2f(sonicXPos, sonicYPos), groundLevel, skyLevel),
+        m_lives(3), m_score(0), m_selectedOption(0) {
     m_window.setVerticalSyncEnabled(true);
 
     // Load the background music
@@ -150,11 +150,18 @@ void GameManager::updatePlaying() {
         }
     }
     if(collisionDetected) {
-        if(m_score > m_maxScore) {
-            m_maxScore = m_score;
-            saveMaxScore(m_maxScore);
+        m_lives--;
+        if(m_lives <= 0) {
+            if(m_score > m_maxScore) {
+                m_maxScore = m_score;
+                saveMaxScore(m_maxScore);
+            }
+            m_gameState = GameState::GAME_OVER;
+        } else {
+            // Reset player and enemies for the next life
+            // m_player.reset();
+            m_enemies.clear();
         }
-        m_gameState = GameState::GAME_OVER;
     }
 }
 
@@ -168,6 +175,19 @@ void GameManager::render() {
     if(m_gameState == GameState::MENU) {
         drawMenu();
     } else if(m_gameState == GameState::PLAYING) {
+        sf::Texture heartTexture;
+        if(!heartTexture.loadFromFile("./assets/sprites/heart.png")) {
+            std::cout << "Error loading the heart texture.\n";
+        }
+        sf::Sprite heartSprite(heartTexture);
+        const float heartSize = 75.0f;
+        const float heartSpacing = 5.0f;
+        const float heartsX = static_cast<float>(windowWidth) - (heartSize * 3) - (heartSpacing * 2);
+        const float heartsY = 10.0f;
+        for(int i = 0; i < m_lives; ++i) {
+            heartSprite.setPosition(heartsX + (i * (heartSize + heartSpacing)), heartsY);
+            m_window.draw(heartSprite);
+        }
         m_scoreText.setString("HI: " + std::to_string(m_maxScore) + "\tScore: " + std::to_string(m_score));
         m_scoreText.setPosition(10, 10);
         std::vector<sf::Sprite> floor = m_floor.getSprites();
@@ -234,5 +254,6 @@ void GameManager::resetGame() {
     m_enemies.clear();
     m_score = 0;
     m_selectedOption = 0;
+    m_lives = 3;
     m_gameState = GameState::PLAYING;
 }
