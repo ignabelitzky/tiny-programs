@@ -28,6 +28,7 @@ class GameManager {
         sf::Music m_backgroundMusic;
 
         Sonic m_player;
+
         int m_lives;
         Floor m_floor;
         std::vector<Enemy> m_enemies;
@@ -48,15 +49,14 @@ class GameManager {
         int m_score;
         int m_maxScore;
 
-        sf::Text m_scoreText;
         sf::Font m_font;
 
-        sf::Font m_menuFont;
+        sf::Text m_scoreText;
         sf::Text m_startGameText;
         sf::Text m_restartText;
         sf::Text m_quitText;
-        int m_selectedOption;
 
+        int m_selectedOption;
 
         void processEvents();
         void handleMenuInput(sf::Keyboard::Key key);
@@ -68,4 +68,7 @@ class GameManager {
         void drawMenu();
         void drawGameOverMenu();
         void resetGame();
+        void loadBackgroundMusic();
+        void loadFonts();
+        void setTexts();
 };

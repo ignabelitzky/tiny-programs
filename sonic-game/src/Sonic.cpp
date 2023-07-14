@@ -67,6 +67,10 @@ sf::Vector2f Sonic::getPosition() {
     return m_shape.getPosition();
 }
 
+void Sonic::setPosition(sf::Vector2f position) {
+    m_shape.setPosition(position);
+}
+
 bool Sonic::collidesWith(Enemy enemy) {
     sf::Vector2f pos1 = m_shape.getPosition();
     sf::Vector2f pos2 = enemy.getPosition();

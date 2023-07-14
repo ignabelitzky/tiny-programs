@@ -5,8 +5,6 @@ constexpr int windowWidth = 1920;
 constexpr int windowHeight = 1000;
 
 // Sonic
-constexpr int sonicXPos = 200;
-constexpr int sonicYPos = windowHeight / 2;
 constexpr float jumpSpeed = 80.0f;
 constexpr float bounceFactor = 0.5f;
 constexpr float sonicRadius = 50.0f;

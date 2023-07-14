@@ -1,47 +1,22 @@
 #include "GameManager.hpp"
 
-GameManager::GameManager() : m_window(sf::VideoMode(windowWidth, windowHeight), "Sonic"), m_isRunning(true),
-        m_gameState(GameState::MENU), m_player(sf::Vector2f(sonicXPos, sonicYPos), groundLevel, skyLevel),
+GameManager::GameManager() :
+        m_window(sf::VideoMode(windowWidth, windowHeight), "Sonic"), m_isRunning(true),
+        m_gameState(GameState::MENU), m_player(sf::Vector2f(0.f, 0.f), groundLevel, skyLevel),
         m_lives(3), m_score(0), m_selectedOption(0) {
     m_window.setVerticalSyncEnabled(true);
+    m_player.setPosition(sf::Vector2f(200.f, windowHeight/2.f));
 
-    // Load the background music
-    if(!m_backgroundMusic.openFromFile("./assets/sounds/sonic_music.wav")) {
-        std::cout << "Error loading the brackground music.\n";
-    }
-    m_backgroundMusic.setLoop(true);
+    // load music
+    loadBackgroundMusic();
 
-    if(!m_font.loadFromFile("./assets/fonts/retroGaming.ttf")) {
-        std::cout << "Error loading the font for the score.\n";
-    }
-    m_scoreText.setFont(m_font);
-    m_scoreText.setCharacterSize(50);
-    m_scoreText.setFillColor(sf::Color::Yellow);
-
-    if(!m_menuFont.loadFromFile("./assets/fonts/retroGaming.ttf")) {
-        std::cout << "Error loading the font for the score.\n";
-    }
-    m_startGameText.setFont(m_menuFont);
-    m_startGameText.setCharacterSize(50);
-    m_startGameText.setFillColor(sf::Color::White);
-    m_startGameText.setString("Start Game");
-    m_startGameText.setPosition(200.f, 200.f);
-
-    m_restartText.setFont(m_menuFont);
-    m_restartText.setCharacterSize(50);
-    m_restartText.setFillColor(sf::Color::White);
-    m_restartText.setString("Restart Game");
-    m_restartText.setPosition(200.f, 200.f);
-
-    m_quitText.setFont(m_menuFont);
-    m_quitText.setCharacterSize(50);
-    m_quitText.setFillColor(sf::Color::White);
-    m_quitText.setString("Quit");
-    m_quitText.setPosition(200.f, 300.f);
+    // load fonts and set texts
+    loadFonts();
+    setTexts();
 
     m_maxScore = retrieveMaxScore();
-    m_limitSeconds = getRandomFloat(1.f, 2.f);
 
+    m_limitSeconds = getRandomFloat(1.f, 2.f);
     m_cloudLimitSeconds = getRandomFloat(0.f, 2.f);
 }
 
@@ -123,14 +98,14 @@ void GameManager::updateMenu() {
 void GameManager::updatePlaying() {
     m_cloudElapsed = m_cloudClock.getElapsedTime();
     if(m_cloudElapsed.asSeconds() >= m_cloudLimitSeconds) {
-        Cloud c(sf::Vector2f(windowWidth * 2, getRandomFloat(0.5f, windowHeight / 2.0f)));
-        m_clouds.push_back(c);
+        Cloud cloud(sf::Vector2f(windowWidth * 2, getRandomFloat(0.5f, windowHeight / 2.0f)));
+        m_clouds.push_back(cloud);
         m_cloudClock.restart();
         m_cloudLimitSeconds = getRandomFloat(0.5f, 2.0f);
     }
     for(size_t i = 0; i < m_clouds.size(); ++i) {
         m_clouds.at(i).update(0.5f);
-        if(m_clouds.at(i).getPosition().x < -50.f) {
+        if(m_clouds.at(i).getPosition().x < (-windowHeight/2.f)) {
             m_clouds.erase(m_clouds.begin() + i);
             --i;
         }
@@ -138,7 +113,7 @@ void GameManager::updatePlaying() {
 
     m_enemyElapsed = m_enemyClock.getElapsedTime();
     if(m_enemyElapsed.asSeconds() >= m_limitSeconds) {
-        Enemy enemy(sf::Vector2f(windowWidth + (enemyRadius*2), windowHeight-75));
+        Enemy enemy(sf::Vector2f(windowWidth + (enemyRadius*2), windowHeight - enemyRadius - 5.f));
         m_enemies.push_back(enemy);
 
         m_enemyClock.restart();
@@ -175,8 +150,7 @@ void GameManager::updatePlaying() {
             }
             m_gameState = GameState::GAME_OVER;
         } else {
-            // Reset player and enemies for the next life
-            // m_player.reset();
+            // Reset enemies for the next life
             m_enemies.clear();
         }
     }
@@ -237,6 +211,7 @@ void GameManager::drawMenu() {
         m_startGameText.setFillColor(sf::Color::White);
         m_quitText.setFillColor(sf::Color::Yellow);
     }
+    m_window.draw(m_player.getShape());
 }
 
 void GameManager::drawGameOverMenu() {
@@ -254,7 +229,7 @@ void GameManager::drawGameOverMenu() {
 
     // Display the score and high score
     sf::Text scoreText;
-    scoreText.setFont(m_menuFont);
+    scoreText.setFont(m_font);
     scoreText.setCharacterSize(30);
     scoreText.setFillColor(sf::Color::White);
     scoreText.setString("Score: " + std::to_string(m_score));
@@ -262,7 +237,7 @@ void GameManager::drawGameOverMenu() {
     m_window.draw(scoreText);
 
     sf::Text highScoreText;
-    highScoreText.setFont(m_menuFont);
+    highScoreText.setFont(m_font);
     highScoreText.setCharacterSize(30);
     highScoreText.setFillColor(sf::Color::White);
     highScoreText.setString("High Score: " + std::to_string(m_maxScore));
@@ -276,4 +251,41 @@ void GameManager::resetGame() {
     m_selectedOption = 0;
     m_lives = 3;
     m_gameState = GameState::PLAYING;
+}
+
+void GameManager::loadBackgroundMusic() {
+    if(!m_backgroundMusic.openFromFile("./assets/sounds/sonic_music.wav")) {
+        std::cout << "Error loading the brackground music.\n";
+    }
+    m_backgroundMusic.setLoop(true);
+}
+
+void GameManager::loadFonts() {
+    if(!m_font.loadFromFile("./assets/fonts/retroGaming.ttf")) {
+        std::cout << "Error loading the font for the score.\n";
+    }
+}
+
+void GameManager::setTexts() {
+    m_scoreText.setFont(m_font);
+    m_scoreText.setCharacterSize(50);
+    m_scoreText.setFillColor(sf::Color::Yellow);
+
+    m_startGameText.setFont(m_font);
+    m_startGameText.setCharacterSize(50);
+    m_startGameText.setFillColor(sf::Color::White);
+    m_startGameText.setString("Start Game");
+    m_startGameText.setPosition(200.f, 200.f);
+
+    m_restartText.setFont(m_font);
+    m_restartText.setCharacterSize(50);
+    m_restartText.setFillColor(sf::Color::White);
+    m_restartText.setString("Restart Game");
+    m_restartText.setPosition(200.f, 200.f);
+
+    m_quitText.setFont(m_font);
+    m_quitText.setCharacterSize(50);
+    m_quitText.setFillColor(sf::Color::White);
+    m_quitText.setString("Quit");
+    m_quitText.setPosition(200.f, 300.f);
 }
