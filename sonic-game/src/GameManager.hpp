@@ -6,7 +6,7 @@
 #include "helper.hpp"
 #include "Sonic.hpp"
 #include "Floor.hpp"
-#include "Enemy.hpp"
+#include "Crab.hpp"
 #include "Cloud.hpp"
 
 enum class GameState {
@@ -31,7 +31,7 @@ class GameManager {
 
         int m_lives;
         Floor m_floor;
-        std::vector<Enemy> m_enemies;
+        std::vector<Crab> m_enemies;
         std::vector<Cloud> m_clouds;
 
         sf::Clock m_cloudClock;

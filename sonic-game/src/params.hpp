@@ -19,6 +19,6 @@ constexpr int skyLevel = 100;
 constexpr float floorSpeed = 20.0f;
 
 // Enemy
-constexpr float enemyRadius = 70.0f;
-constexpr float enemyVelocity = floorSpeed;
-constexpr int enemySpritesCount = 5;
+constexpr float crabRadius = 70.0f;
+constexpr float crabVelocity = floorSpeed;
+constexpr int crabSpritesCount = 5;

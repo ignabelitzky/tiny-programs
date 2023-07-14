@@ -1,10 +1,10 @@
-#include "Enemy.hpp"
+#include "Crab.hpp"
 
-Enemy::Enemy(sf::Vector2f position) :
+Crab::Crab(sf::Vector2f position) :
         m_velocity(0.0f, 0.0f), m_textureIndex(0), m_passed(false) {
     m_shape.setPosition(position);
-    m_shape.setRadius(enemyRadius);
-    m_shape.setOrigin(enemyRadius, enemyRadius);
+    m_shape.setRadius(crabRadius);
+    m_shape.setOrigin(crabRadius, crabRadius);
 
     loadTextures();
 
@@ -14,8 +14,8 @@ Enemy::Enemy(sf::Vector2f position) :
     m_elapsed = m_clock.getElapsedTime();
 }
 
-void Enemy::update(float deltaTime) {
-    m_velocity.x = -enemyVelocity * deltaTime;
+void Crab::update(float deltaTime) {
+    m_velocity.x = -crabVelocity * deltaTime;
     m_shape.move(m_velocity);
     m_elapsed = m_clock.getElapsedTime();
     if(m_elapsed >= m_frameDuration) {
@@ -25,30 +25,30 @@ void Enemy::update(float deltaTime) {
     }
 }
 
-sf::CircleShape Enemy::getShape() {
+sf::CircleShape Crab::getShape() {
     return m_shape;
 }
 
-sf::Vector2f Enemy::getPosition() {
+sf::Vector2f Crab::getPosition() {
     return m_shape.getPosition();
 }
 
-float Enemy::getRadius() {
+float Crab::getRadius() {
     return m_shape.getRadius();
 }
 
-bool Enemy::isPassed() {
+bool Crab::isPassed() {
     return m_passed;
 }
 
-void Enemy::setPassed(bool value) {
+void Crab::setPassed(bool value) {
     m_passed = value;
 }
 
-void Enemy::loadTextures() {
-    for(int i = 1; i <= enemySpritesCount; ++i) {
+void Crab::loadTextures() {
+    for(int i = 1; i <= crabSpritesCount; ++i) {
         sf::Texture texture;
-        std::string filename = "./assets/sprites/enemy" + std::to_string(i) + ".png";
+        std::string filename = "./assets/sprites/crab" + std::to_string(i) + ".png";
         if(!texture.loadFromFile(filename)) {
             std::cout << "Failed to load " << filename << std::endl;
         }

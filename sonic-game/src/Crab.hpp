@@ -4,9 +4,9 @@
 #include <iostream>
 #include "params.hpp"
 
-class Enemy {
+class Crab {
     public:
-        Enemy(sf::Vector2f position);
+        Crab(sf::Vector2f position);
         void update(float deltaTime);
         sf::CircleShape getShape();
         sf::Vector2f getPosition();

@@ -71,15 +71,15 @@ void Sonic::setPosition(sf::Vector2f position) {
     m_shape.setPosition(position);
 }
 
-bool Sonic::collidesWith(Enemy enemy) {
+bool Sonic::collidesWith(Crab crab) {
     sf::Vector2f pos1 = m_shape.getPosition();
-    sf::Vector2f pos2 = enemy.getPosition();
+    sf::Vector2f pos2 = crab.getPosition();
 
     float dx = pos2.x - pos1.x;
     float dy = pos2.y - pos1.y;
     float distance = std::sqrt(dx * dx + dy * dy);
 
-    float radiusSum = m_shape.getRadius() + enemy.getRadius();
+    float radiusSum = m_shape.getRadius() + crab.getRadius();
 
     return distance < radiusSum;
 }

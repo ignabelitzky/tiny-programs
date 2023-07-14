@@ -113,8 +113,8 @@ void GameManager::updatePlaying() {
 
     m_enemyElapsed = m_enemyClock.getElapsedTime();
     if(m_enemyElapsed.asSeconds() >= m_limitSeconds) {
-        Enemy enemy(sf::Vector2f(windowWidth + (enemyRadius*2), windowHeight - enemyRadius - 5.f));
-        m_enemies.push_back(enemy);
+        Crab crab(sf::Vector2f(windowWidth + (crabRadius*2), windowHeight - crabRadius - 5.f));
+        m_enemies.push_back(crab);
 
         m_enemyClock.restart();
         m_limitSeconds = getRandomFloat(1.0f, 2.0f);
@@ -124,7 +124,7 @@ void GameManager::updatePlaying() {
     m_floor.update(0.5f);
     for(size_t i = 0; i < m_enemies.size(); ++i) {
         m_enemies.at(i).update(0.5f);
-        if(m_enemies.at(i).getPosition().x < -enemyRadius) {
+        if(m_enemies.at(i).getPosition().x < -crabRadius) {
             m_enemies.erase(m_enemies.begin() + i);
             --i;
         }

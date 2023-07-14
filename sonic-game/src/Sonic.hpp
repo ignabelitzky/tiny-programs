@@ -4,7 +4,7 @@
 #include <iostream>
 #include <cmath>
 #include "params.hpp"
-#include "Enemy.hpp"
+#include "Crab.hpp"
 
 class Sonic {
     public:
@@ -15,7 +15,7 @@ class Sonic {
         sf::CircleShape getShape();
         sf::Vector2f getPosition();
         void setPosition(sf::Vector2f position);
-        bool collidesWith(Enemy enemy);
+        bool collidesWith(Crab enemy);
 
     private:
         sf::CircleShape m_shape;
