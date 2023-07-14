@@ -211,7 +211,6 @@ void GameManager::drawMenu() {
         m_startGameText.setFillColor(sf::Color::White);
         m_quitText.setFillColor(sf::Color::Yellow);
     }
-    m_window.draw(m_player.getShape());
 }
 
 void GameManager::drawGameOverMenu() {
