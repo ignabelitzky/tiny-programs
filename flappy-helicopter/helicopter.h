@@ -6,7 +6,6 @@
 class Helicopter {
     public:
         Helicopter(int radius, sf::Vector2f position);
-        ~Helicopter();
         void up();
         void update();
         void show(sf::RenderWindow& window);
@@ -17,10 +16,17 @@ class Helicopter {
     private:
         sf::CircleShape m_helicopter;
         sf::Texture m_texture;
+        sf::Vector2u m_textureSize;
+        int m_textureWidth;
+        int m_textureHeight;
+        sf::IntRect m_textureRect;
         sf::Vector2f m_position;
         int m_radius;
         float m_gravity;
         float m_upForce;
         sf::Vector2f m_velocity;
         bool m_isAlive;
+        sf::Clock m_clock;
+        float m_elapsedTime;
+        float m_frameDuration;
 };

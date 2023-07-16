@@ -5,7 +5,7 @@ constexpr int height = 900;
 
 // Bird properties
 constexpr int helicopterRadius = 50;
-constexpr int helicopterStartPositionX = 140;
+constexpr int helicopterStartPositionX = 300;
 constexpr int helicopterStartPositionY = height/2;
 
 
