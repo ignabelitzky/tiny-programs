@@ -9,6 +9,7 @@ GameManager::GameManager() :
     loadFonts();
     setTexts();
     m_highScore = loadHighScore(std::string("highscore.txt"));
+    m_player.setPosition(WIDTH/2, HEIGHT/2);
 }
 
 GameManager::~GameManager() {
@@ -56,6 +57,11 @@ void GameManager::handleMenuInput(sf::Keyboard::Key key) {
 }
 
 void GameManager::handlePlayingInput(sf::Keyboard::Key key) {
+    if(key == sf::Keyboard::Left) {
+        m_player.moveLeft();
+    } else if(key == sf::Keyboard::Right) {
+        m_player.moveRight();
+    }
 }
 
 void GameManager::handleGameOverInput(sf::Keyboard::Key key) {
@@ -92,6 +98,7 @@ void GameManager::updateMenu() {
 }
 
 void GameManager::updatePlaying() {
+    m_player.draw(m_window);
 }
 
 void GameManager::updateGameOver() {

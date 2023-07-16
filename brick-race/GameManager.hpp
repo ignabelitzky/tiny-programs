@@ -3,6 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include <iostream>
+#include "Car.hpp"
 #include "params.hpp"
 #include "helper.hpp"
 
@@ -34,6 +35,7 @@ class GameManager {
         sf::RenderWindow m_window;
         bool m_isRunning;
         GameState m_gameState;
+        Car m_player;
         int m_score;
         int m_highScore;
         sf::Font m_font;
