@@ -9,29 +9,43 @@ int main() {
     sf::RenderWindow window(sf::VideoMode(width, height), "Flappy Helicopter");
     window.setVerticalSyncEnabled(true);
 
+    sf::Texture backgroundTexture;
+    if(!backgroundTexture.loadFromFile("./resources/images/stars.jpg")) {
+        std::cout << "Error: Cannot open background image.\n";
+    }
+    sf::Sprite backgroundSprite(backgroundTexture);
+
     bool gameOver = false;
     int score = 0;
     int maxScore = retrieveMaxScore();
 
     sf::Font font;
-    if(!font.loadFromFile("./resources/fonts/arial.ttf")) {
+    if(!font.loadFromFile("./resources/fonts/retroGaming.ttf")) {
         std::cerr << "Couldn't load the font.\n";
         return 1;
     }
     sf::Text scoreText;
     scoreText.setFont(font);
-    scoreText.setCharacterSize(30);
-    scoreText.setFillColor(sf::Color::White);
-    scoreText.setPosition(width - 150, 10);
+    scoreText.setCharacterSize(50);
+    scoreText.setFillColor(sf::Color::Yellow);
     scoreText.setString("Score: " + std::to_string(score));
+
+    sf::FloatRect textBounds = scoreText.getLocalBounds();
+    scoreText.setOrigin(textBounds.left + textBounds.width/2, textBounds.top - textBounds.height);
+
+    float centerX = width / 2;
+    float topY = 0.0f;
+
+    scoreText.setPosition(centerX, topY);
+
 
     sf::Text gameoverText;
     gameoverText.setFont(font);
-    gameoverText.setCharacterSize(45);
-    gameoverText.setFillColor(sf::Color(138, 43, 226));
+    gameoverText.setCharacterSize(70);
+    gameoverText.setFillColor(sf::Color::White);
     gameoverText.setString("Your score: " + std::to_string(score) +
             "\nMax Score: " + std::to_string(maxScore) +
-            "\nPress space to restart.\nPress escape to exit.");
+            "\nspace to restart.\nEscape to exit.");
 
     // Calculate the position to center the text
     sf::FloatRect textRect = gameoverText.getLocalBounds();
@@ -51,7 +65,7 @@ int main() {
     sf::Vector2f pipePosition(pipeStartPositionX, pipeStartPositionY);
      
     
-    Helicopter helicopter(helicopterRadius, helicopterPosition);
+    Helicopter helicopter(helicopterWidth, helicopterHeight, helicopterPosition);
     std::vector<Pipe> pipes;
 
     while(window.isOpen()) {
@@ -66,6 +80,9 @@ int main() {
             }
         }
         window.clear();
+
+        window.draw(backgroundSprite);
+
         if(!gameOver) {
             // Get the elapsed time
             elapsedtime = clock.getElapsedTime();
@@ -109,7 +126,7 @@ int main() {
                 maxScore = score;
                 gameoverText.setString("Your score: " + std::to_string(score) +
                         "\nMax Score: " + std::to_string(maxScore) +
-                        "\nPress space to restart.\nPress escape to exit.");
+                        "\nSpace to restart.\nEscape to exit.");
                 saveMaxScore(maxScore);
                 window.draw(gameoverText);
             }
@@ -125,7 +142,7 @@ int main() {
             }
             gameoverText.setString("Your score: " + std::to_string(score) +
                     "\nMax Score: " + std::to_string(maxScore) +
-                    "\nPress space to restart.\nPress escape to exit.");
+                    "\nSpace to restart.\nEscape to exit.");
             window.draw(gameoverText);
         }
 

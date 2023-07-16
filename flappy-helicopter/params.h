@@ -1,18 +1,19 @@
 #pragma once
 
-constexpr int width = 1600;
-constexpr int height = 900;
+constexpr int width = 1920;
+constexpr int height = 1000;
 
 // Bird properties
-constexpr int helicopterRadius = 50;
-constexpr int helicopterStartPositionX = 300;
+constexpr int helicopterWidth = 150;
+constexpr int helicopterHeight = 75;
+constexpr int helicopterStartPositionX = 250;
 constexpr int helicopterStartPositionY = height/2;
 
 
 // Pipe properties
 constexpr int pipeStartPositionX = width;
 constexpr int pipeStartPositionY = 0;
-constexpr int minPipeWidth = 30;
-constexpr int maxPipeWidth = 80;
+constexpr int minPipeWidth = 80;
+constexpr int maxPipeWidth = 160;
 constexpr int minPipeHeight = 30;
-constexpr int maxPipeHeight = height - 5 * helicopterRadius;
+constexpr int maxPipeHeight = height - 3 * helicopterHeight;
