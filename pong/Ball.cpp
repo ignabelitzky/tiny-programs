@@ -1,4 +1,4 @@
-#include "ball.h"
+#include "Ball.hpp"
 
 Ball::Ball(int radius, sf::Vector2f position, sf::Vector2f velocity) {
     m_radius = radius;
@@ -36,4 +36,8 @@ sf::Vector2f Ball::getVelocity() {
 
 void Ball::render(sf::RenderWindow& window) {
     window.draw(m_ball);
+}
+
+sf::CircleShape Ball::getShape() {
+    return m_ball;
 }

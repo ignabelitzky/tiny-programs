@@ -12,6 +12,7 @@ class Ball {
         void setVelocity(sf::Vector2f velocity);
         sf::Vector2f getVelocity();
         void render(sf::RenderWindow& window);
+        sf::CircleShape getShape();
     private:
         int m_radius;
         sf::CircleShape m_ball;

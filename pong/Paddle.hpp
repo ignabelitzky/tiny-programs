@@ -9,6 +9,7 @@ class Paddle {
         void moveDown();
         void render(sf::RenderWindow& window);
         sf::Vector2f getPosition();
+        sf::RectangleShape getShape();
     private:
         sf::Vector2f m_position;
         sf::RectangleShape m_paddle;

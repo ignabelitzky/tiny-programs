@@ -1,4 +1,4 @@
-#include "paddle.h"
+#include "Paddle.hpp"
 
 Paddle::Paddle(int width, int height, sf::Vector2f position) {
     m_width = width;
@@ -29,4 +29,8 @@ void Paddle::render(sf::RenderWindow& window) {
 
 sf::Vector2f Paddle::getPosition() {
     return m_position;
+}
+
+sf::RectangleShape Paddle::getShape() {
+    return m_paddle;
 }
