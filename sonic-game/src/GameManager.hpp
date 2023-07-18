@@ -26,6 +26,8 @@ class GameManager {
         GameState m_gameState;
 
         sf::Music m_backgroundMusic;
+        sf::Texture m_backgroundTexture;
+        sf::Sprite m_backgroundSprite;
 
         Sonic m_player;
 

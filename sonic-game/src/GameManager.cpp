@@ -7,6 +7,11 @@ GameManager::GameManager() :
     m_window.setVerticalSyncEnabled(true);
     m_player.setPosition(sf::Vector2f(200.f, windowHeight/2.f));
 
+    if(!m_backgroundTexture.loadFromFile("./assets/sprites/stars.jpg")) {
+        std::cout << "Error: Unnable to load background texture.\n";
+    }
+    m_backgroundSprite.setTexture(m_backgroundTexture);
+
     // load music
     loadBackgroundMusic();
 
@@ -163,6 +168,7 @@ void GameManager::updateGameOver() {
 void GameManager::render() {
     m_window.clear();
 
+    m_window.draw(m_backgroundSprite);
     if(m_gameState == GameState::MENU) {
         drawMenu();
     } else if(m_gameState == GameState::PLAYING) {
