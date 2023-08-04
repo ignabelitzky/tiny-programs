@@ -11,9 +11,9 @@ class GravitySource {
             pos.x = pos_x;
             pos.y = pos_y;
             this->strength = strength;
-            s.setFillColor(sf::Color::Red);
-            s.setOrigin(70.0f, 70.0f);
-            s.setRadius(70.0f);
+            s.setFillColor(sf::Color::Black);
+            s.setOrigin(50.0f, 50.0f);
+            s.setRadius(50.0f);
             s.setPosition(pos);
         }
 
@@ -42,9 +42,9 @@ class Particle {
             pos.y = pos_y;
             vel.x = vel_x;
             vel.y = vel_y;
-            s.setFillColor(sf::Color::Yellow);
-            s.setOrigin(0.5f, 0.5f);
-            s.setRadius(0.5f);
+            s.setFillColor(sf::Color::Black);
+            s.setOrigin(1.5f, 1.5f);
+            s.setRadius(1.5f);
             s.setPosition(pos);
         }
 
@@ -87,6 +87,7 @@ int main() {
     constexpr int height = 900;
     sf::RenderWindow window(sf::VideoMode(width, height), "Gravity");
     window.setVerticalSyncEnabled(true);
+    window.clear(sf::Color::White);
 
     std::random_device rd;
     std::mt19937 gen(rd());
@@ -94,7 +95,7 @@ int main() {
     std::uniform_real_distribution<float> posXDist(0.0f, width);
     std::uniform_real_distribution<float> posYDist(0.0f, height);
 
-    GravitySource source(width/2, height/2, 14000);
+    GravitySource source(width/2, height/2, 3500);
     std::vector<Particle> particles;
     for(int i = 0; i < 10000; ++i) {
         Particle p(posXDist(gen), posYDist(gen), velDist(gen), velDist(gen));
@@ -108,7 +109,7 @@ int main() {
                 window.close();
         }
 
-        window.clear();
+        window.clear(sf::Color::White);
         for (auto it = particles.begin(); it != particles.end();) {
             sf::Vector2f position = it->get_pos();
             if (position.x > width/2 - 50.0f && position.x < width/2 + 50.0f &&
