@@ -1,0 +1,47 @@
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Compiled Static libraries
+*.lib
+*.a
+
+# Executables
+*.exe
+*.out
+
+# Dependency directories
+.depend/
+
+# IDE specific files
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sln.docstates
+*.suo
+*.user
+*.userosscache
+*.sln.cache
+*.opensdf
+*.cachefile
+*.VC.db
+*.VC.VC.opendb
+
+# Miscellaneous files
+*.log
+*.bak
+*.swp
+*.DS_Store
