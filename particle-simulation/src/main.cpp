@@ -12,32 +12,22 @@ sf::Vector2i mpos;
 
 void update(std::vector<sf::Vector2f> &pos, std::vector<sf::Vector2f> &vel, std::vector<sf::Color> &cs)
 {
-    for (size_t i = 0; i < pos.size(); i++)
-    {
-        if (mpressed)
-        {
-            sf::Vector2f dif = pos[i] - sf::Vector2f(mpos);
-            sf::Vector2f normalised = normalise(dif);
+    for (size_t i = 0; i < pos.size(); i++) {
+        sf::Vector2f dif = pos[i] - sf::Vector2f(mpos);
+        sf::Vector2f normalised = normalise(dif);
+        if(mpressed) {
             vel[i] -= sf::Vector2f(normalised.x / 5, normalised.y / 5);
         }
-        if (rpressed)
-        {
-            sf::Vector2f dif = pos[i] - sf::Vector2f(mpos);
-            sf::Vector2f normalised = normalise(dif);
+        if(rpressed) {
             vel[i] += sf::Vector2f(normalised.x / 5, normalised.y / 5);
         }
 
         float curdif = abs(vel[i].x) + abs(vel[i].y) + ((sin(ctr.getElapsedTime().asMilliseconds() / 300) * 1.5) + 1.5);
 
         cs[i].b = 255;
-        if (curdif * 20 > 255)
-        {
-            cs[i].r = 255;
-        }
-        else
-        {
-            cs[i].r = curdif * 20;
-        }
+
+        cs[i].r = 255 * (int)(curdif * 20 > 255) + curdif * 20 * (int)(curdif * 20 <= 255);
+
         vel[i].x *= 0.99;
         vel[i].y *= 0.99;
         pos[i] += sf::Vector2f(vel[i].x * 3, vel[i].y * 3);
@@ -46,7 +36,8 @@ void update(std::vector<sf::Vector2f> &pos, std::vector<sf::Vector2f> &vel, std:
 
 int main()
 {
-    unsigned int size = 150000;
+    const unsigned int size = 150000;
+
     std::vector<sf::Vector2f> pos;
     std::vector<sf::Vector2f> vel;
     std::vector<sf::Color> cs;
@@ -96,6 +87,7 @@ int main()
         mpressed = sf::Mouse::isButtonPressed(sf::Mouse::Left);
 
         update(pos, vel, cs);
+
         p.setSize(sf::Vector2f(zoom * 1, zoom * 1));
         p.setFillColor(sf::Color::Yellow);
         for (size_t i = 0; i < pos.size(); i++)

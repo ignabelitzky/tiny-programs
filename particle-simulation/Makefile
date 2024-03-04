@@ -1,5 +1,5 @@
 CXX := g++
-CXXFLAGS := -std=c++23 -Wall -Werror -Wextra -pedantic -march=native -O2
+CXXFLAGS := -std=c++23 -Wall -Werror -Wextra -pedantic -march=native -O3 -ffast-math -ftree-vectorize -funroll-loops
 SFML_LIBS := -lsfml-graphics -lsfml-window -lsfml-system
 OMP_FLAG := -fopenmp
 
