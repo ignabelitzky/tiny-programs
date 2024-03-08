@@ -1,62 +1,75 @@
+#include <iostream>
+#include <vector>
+#include <string>
+#include "../include/menu.hpp"
+#include "../include/message_box.hpp"
+#include "../include/audio.hpp"
 #define MINIAUDIO_IMPLEMENTATION
 #include "../include/miniaudio.h"
-#include <iostream>
 
-void data_callback(ma_device* pDevice, void* pOutput, const void* pInput, ma_uint32 frameCount)
+int main()
 {
-    ma_decoder* pDecoder = (ma_decoder*)pDevice->pUserData;
-    if (pDecoder == NULL) {
-        return;
-    }
-
-    ma_decoder_read_pcm_frames(pDecoder, pOutput, frameCount, NULL);
-
-    (void)pInput;
-}
-
-int main(int argc, char** argv)
-{
-    ma_result result;
-    ma_decoder decoder;
-    ma_device_config deviceConfig;
-    ma_device device;
-
-    if (argc < 2) {
-        std::cout << "No input file...\n";
-        return -1;
-    }
-
-    result = ma_decoder_init_file(argv[1], NULL, &decoder);
-    if (result != MA_SUCCESS) {
-        std::cout << "Could not load file: " << argv[1] << std::endl;
-        return -2;
-    }
-
-    deviceConfig = ma_device_config_init(ma_device_type_playback);
-    deviceConfig.playback.format   = decoder.outputFormat;
-    deviceConfig.playback.channels = decoder.outputChannels;
-    deviceConfig.sampleRate        = decoder.outputSampleRate;
-    deviceConfig.dataCallback      = data_callback;
-    deviceConfig.pUserData         = &decoder;
-
-    if (ma_device_init(NULL, &deviceConfig, &device) != MA_SUCCESS) {
-        std::cout << "Failed to open playback device.\n";
-        ma_decoder_uninit(&decoder);
-        return -3;
-    }
-
-    if (ma_device_start(&device) != MA_SUCCESS) {
-        std::cout << "Failed to start playback device.\n";
-        ma_device_uninit(&device);
-        ma_decoder_uninit(&decoder);
-        return -4;
-    }
-
-    std::cout << "Press Enter to quit...\n";
-    getchar();
-
-    ma_device_uninit(&device);
-    ma_decoder_uninit(&decoder);
+    std::string title = " [Console Audio Player] ";
+    std::vector<std::string> options = {
+        "James Bond soundrack",
+        "Mission Impossible soundtrack",
+        "Pirates of the Caribbean soundtrack",
+        "Exit"};
+    std::string selection = "";
+    std::string soundtrackFile = "";
+    do
+    {
+        try
+        {
+            Menu *menu = new Menu(title, options);
+            selection = menu->show();
+            delete menu;
+        }
+        catch (const std::runtime_error &e)
+        {
+            std::cerr << e.what() << std::endl;
+            return 1;
+        }
+        if (selection == options.at(0))
+        {
+            soundtrackFile = "resources/tracks/james-bond.mp3";
+        }
+        else if (selection == options.at(1))
+        {
+            soundtrackFile = "resources/tracks/mission-impossible.mp3";
+        }
+        else if (selection == options.at(2))
+        {
+            soundtrackFile = "resources/tracks/pirates-of-the-caribbean.mp3";
+        }
+        if (selection != options.at(options.size() - 1))
+        {
+            try
+            {
+                Audio *audio = new Audio(soundtrackFile);
+                audio->play();
+                try
+                {
+                    MessageBox *messageBox = new MessageBox(" [Audio Playing] ",
+                        "Playing " + selection + "\n\nPlease press enter to go to the Main Menu.",
+                        {"Go to Main Menu"});
+                    messageBox->show();
+                    delete messageBox;
+                }
+                catch (const std::runtime_error &e)
+                {
+                    std::cerr << e.what() << std::endl;
+                    return 1;
+                }
+                delete audio;
+            }
+            catch (const std::runtime_error &e)
+            {
+                std::cerr << e.what() << std::endl;
+                return 1;
+            }
+        }
+    } while (selection != options.at(options.size() - 1));
 
     return 0;
 }
