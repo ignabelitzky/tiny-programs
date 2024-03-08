@@ -3,8 +3,8 @@
 
 #include <string>
 #include <stdexcept>
-#include "miniaudio.h"
-#include "../include/helper.hpp"
+#include "miniaudio.hpp"
+#include "helper.hpp"
 
 class Audio {
     public:

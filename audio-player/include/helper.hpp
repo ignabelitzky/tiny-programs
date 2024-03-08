@@ -2,7 +2,7 @@
 #define HELPER_H
 
 #include <string>
-#include "../include/miniaudio.h"
+#include "miniaudio.hpp"
 
 void data_callback(ma_device* pDevice, void* pOutput, const void* pInput, ma_uint32 frameCount);
 

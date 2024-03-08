@@ -5,7 +5,7 @@
 #include "../include/message_box.hpp"
 #include "../include/audio.hpp"
 #define MINIAUDIO_IMPLEMENTATION
-#include "../include/miniaudio.h"
+#include "../include/miniaudio.hpp"
 
 int main()
 {
