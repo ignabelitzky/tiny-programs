@@ -1,15 +1,16 @@
 # Simple Audio Player
 
-This is a simple audio player written in C++ using the miniaudio library. It loads an audio file specified as a command-line argument and plays it back through the default audio output device.
+This is a simple audio player written in C++ using the miniaudio library and nCurses. It loads an audio file and plays it back through the default audio output device.
 
 ## Features
 - Supports playback of various audio file formats (WAV, FLAC, MP3, etc.)
 - Minimalistic command-line interface
-- Cross-platform compatibility (works on Windows, macOS, and Linux)
+- Works on Linux
 
 ## Prerequisites
 - **g++ compiler**
 - miniaudio library (included in the `include` directory)
+- ncurses library
 - Audio file(s) to play
 
 ## Building
@@ -31,9 +32,9 @@ make
 ## Usage
 Run the program from the command line with the path to the audio file you want to play as the argument. For example:
 ```Bash
-./main <path-to-audio-file>
+./main
 ```
+A menu will show up, and you only need to select one option of the three to play the audio.
 
 ## Troubleshooting
 - If you encounter any issues with audio playback, ensure that your audio output device is correctly configured and functional.
-- Check that the specified audio file exists and is in a supported format.
