@@ -11,7 +11,7 @@ int main()
 {
     std::string title = " [Console Audio Player] ";
     std::vector<std::string> options = {
-        "James Bond soundrack",
+        "Batman soundrack",
         "Mission Impossible soundtrack",
         "Pirates of the Caribbean soundtrack",
         "Exit"};
@@ -32,7 +32,7 @@ int main()
         }
         if (selection == options.at(0))
         {
-            soundtrackFile = "resources/tracks/james-bond.mp3";
+            soundtrackFile = "resources/tracks/batman.mp3";
         }
         else if (selection == options.at(1))
         {
