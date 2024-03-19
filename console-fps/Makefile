@@ -1,10 +1,10 @@
 CXX := g++
-CXXFLAGS := -Wall -Werror -Wextra -pedantic -std=c++23 -O3 -march=native -Wno-unused-variable
+CXXFLAGS := -Wall -Werror -Wextra -pedantic -std=c++23 -O3 -march=native
 LDFLAGS := -lncursesw
 
 TARGET := main
 
-SRC := src/main.cpp
+SRC := src/main.cpp src/utils.cpp
 OBJ := $(SRC:.cpp=.o)
 
 all: $(TARGET)

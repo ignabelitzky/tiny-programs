@@ -1,65 +1,24 @@
 #include <ncurses.h>
-#include <string>
 #include <cmath>
-#include <chrono>
 #include <vector>
 #include <utility>
 #include <algorithm>
-
-float fPlayerX = 8.0f;
-float fPlayerY = 8.0f;
-float fPlayerA = 0.0f;
-
-int nScreenWidth = 0;
-int nScreenHeight = 0;
-
-int nMapHeight = 16;
-int nMapWidth = 16;
-
-float fFOV = 3.14159 / 4.0;
-float fDepth = 16.0f;
-
-std::wstring map;
+#include "../include/params.hpp"
+#include "../include/utils.hpp"
 
 int main()
 {
-    map += L"################";
-    map += L"#..............#";
-    map += L"#..............#";
-    map += L"#...........#..#";
-    map += L"#...........#..#";
-    map += L"#....########..#";
-    map += L"#..............#";
-    map += L"#..............#";
-    map += L"#..............#";
-    map += L"#..............#";
-    map += L"#..............#";
-    map += L"#..............#";
-    map += L"#.......########";
-    map += L"#..............#";
-    map += L"#..............#";
-    map += L"################";
+    initialize_map(map);
 
-    // WINDOW *minimap = nullptr;
-    initscr();
-    start_color();
-    init_pair(1, COLOR_RED, COLOR_BLUE);
-    init_pair(2, COLOR_WHITE, COLOR_BLACK);
-    init_pair(3, COLOR_YELLOW, COLOR_WHITE);
-    init_pair(4, COLOR_BLACK, COLOR_GREEN);
-    setlocale(LC_ALL, "");
-    getmaxyx(stdscr, nScreenHeight, nScreenWidth);
-    noecho();
-    curs_set(0);
-    nodelay(stdscr, true);
-    keypad(stdscr, true);
-    // minimap = newwin(nMapHeight, nMapWidth, 0, 0);
-    int input = 0;
+    if (!initialize_ncurses())
+    {
+        endwin();
+        return 1;
+    }
 
-    auto tp1 = std::chrono::system_clock::now();
-    auto tp2 = std::chrono::system_clock::now();
+    getmaxyx(stdscr, screenHeight, screenWidth);
 
-    while (1)
+    while (!quit)
     {
         tp2 = std::chrono::system_clock::now();
         std::chrono::duration<float> elapsedTime = tp2 - tp1;
@@ -69,72 +28,72 @@ int main()
         switch (input = getch())
         {
         case KEY_LEFT:
-            fPlayerA -= 0.8f * fElapsedTime;
+            playerA -= 0.8f * fElapsedTime;
             break;
         case KEY_RIGHT:
-            fPlayerA += 0.8f * fElapsedTime;
+            playerA += 0.8f * fElapsedTime;
             break;
         case KEY_UP:
-            fPlayerX += sinf(fPlayerA) * 5.0f * fElapsedTime;
-            fPlayerY += cosf(fPlayerA) * 5.0f * fElapsedTime;
-            if (map[(int)fPlayerY * nMapWidth + (int)fPlayerX] == '#')
+            playerX += sinf(playerA) * 5.0f * fElapsedTime;
+            playerY += cosf(playerA) * 5.0f * fElapsedTime;
+            if (map[(int)playerY * mapWidth + (int)playerX] == '#')
             {
-                fPlayerX -= sinf(fPlayerA) * 5.0f * fElapsedTime;
-                fPlayerY -= cosf(fPlayerA) * 5.0f * fElapsedTime;
+                playerX -= sinf(playerA) * 5.0f * fElapsedTime;
+                playerY -= cosf(playerA) * 5.0f * fElapsedTime;
             }
             break;
         case KEY_DOWN:
-            fPlayerX -= sinf(fPlayerA) * 5.0f * fElapsedTime;
-            fPlayerY -= cosf(fPlayerA) * 5.0f * fElapsedTime;
-            if (map[(int)fPlayerY * nMapWidth + (int)fPlayerX] == '#')
+            playerX -= sinf(playerA) * 5.0f * fElapsedTime;
+            playerY -= cosf(playerA) * 5.0f * fElapsedTime;
+            if (map[(int)playerY * mapWidth + (int)playerX] == '#')
             {
-                fPlayerX += sinf(fPlayerA) * 5.0f * fElapsedTime;
-                fPlayerY += cosf(fPlayerA) * 5.0f * fElapsedTime;
+                playerX += sinf(playerA) * 5.0f * fElapsedTime;
+                playerY += cosf(playerA) * 5.0f * fElapsedTime;
             }
+            break;
+        case 'q':
+            quit = true;
             break;
         default:
             break;
         }
 
-        for (int x = 0; x < nScreenWidth; ++x)
+        for (int x = 0; x < screenWidth; ++x)
         {
             // for each column, calculate the projected ray angle into world space
-            float fRayAngle = (fPlayerA - fFOV / 2.0f) + ((float)x / (float)nScreenWidth) * fFOV;
+            float rayAngle = (playerA - FOV / 2.0f) + ((float)x / (float)screenWidth) * FOV;
 
-            float fDistanceToWall = 0.0f;
-            bool bHitWall = false;
-            bool bBoundary = false;
+            float distanceToWall = 0.0f;
+            bool hitWall = false;
+            bool boundary = false;
 
-            float fEyeX = sinf(fRayAngle); // unit vector for ray in player space
-            float fEyeY = cosf(fRayAngle); // unit vector for ray in player space
-
-            while (!bHitWall && fDistanceToWall < fDepth)
+            while (!hitWall && distanceToWall < depth)
             {
-                fDistanceToWall += 0.1f;
-                float fEyeX = sinf(fRayAngle);
-                float fEyeY = cosf(fRayAngle);
-                int nTestX = (int)(fPlayerX + fEyeX * fDistanceToWall);
-                int nTestY = (int)(fPlayerY + fEyeY * fDistanceToWall);
+                distanceToWall += 0.1f;
+                float eyeX = sinf(rayAngle);
+                float eyeY = cosf(rayAngle);
+                int testX = (int)(playerX + eyeX * distanceToWall);
+                int testY = (int)(playerY + eyeY * distanceToWall);
                 // test if ray is out of bounds
-                if (nTestX < 0 || nTestX >= nMapWidth || nTestY < 0 || nTestY >= nMapHeight)
+                if (testX < 0 || testX >= mapWidth || testY < 0 || testY >= mapHeight)
                 {
-                    bHitWall = true;
-                    fDistanceToWall = fDepth;
+                    hitWall = true;
+                    distanceToWall = depth;
                 }
                 else
                 {
                     // ray is inbounds so test to see if the ray cell is a wall block
-                    if (map[nTestY * nMapWidth + nTestX] == '#')
+                    if (map[testY * mapWidth + testX] == '#')
                     {
-                        bHitWall = true;
+                        hitWall = true;
                         std::vector<std::pair<float, float>> p; // distance, dot
                         for (int tx = 0; tx < 2; ++tx)
                             for (int ty = 0; ty < 2; ++ty)
                             {
-                                float vy = (float)nTestY + ty - fPlayerY;
-                                float vx = (float)nTestX + tx - fPlayerX;
+                                float vy = (float)testY + ty - playerY;
+                                float vx = (float)testX + tx - playerX;
                                 float d = sqrt(vx * vx + vy * vy);
-                                float dot = (fEyeX * vx / d) + (fEyeY * vy / d);
+                                float dot = (eyeX * vx / d) + (eyeY * vy / d);
                                 p.push_back(std::make_pair(d, dot));
                             }
                         // sort pairs from closest to farthest
@@ -142,77 +101,75 @@ int main()
                                   { return left.first < right.first; });
                         float fBound = 0.01;
                         if (acos(p.at(0).second) < fBound)
-                            bBoundary = true;
+                            boundary = true;
                         if (acos(p.at(1).second) < fBound)
-                            bBoundary = true;
+                            boundary = true;
                         if (acos(p.at(2).second) < fBound)
-                            bBoundary = true;
+                            boundary = true;
                     }
                 }
             }
             // calculate distance to ceiling and floor
-            int nCeiling = (float)(nScreenHeight / 2.0) - nScreenHeight / ((float)fDistanceToWall);
-            int nFloor = nScreenHeight - nCeiling;
+            int ceiling = (float)(screenHeight / 2.0) - screenHeight / ((float)distanceToWall);
+            int floor = screenHeight - ceiling;
 
-            short nShade = ' ';
-            if (fDistanceToWall <= fDepth / 4.0f)
+            short shade = ' ';
+            if (distanceToWall <= depth / 4.0f)
             {
-                nShade = '@';
+                shade = '#';
             }
-            else if (fDistanceToWall < fDepth / 3.0f)
+            else if (distanceToWall < depth / 3.0f)
             {
-                nShade = '$';
+                shade = '@';
             }
-            else if (fDistanceToWall < fDepth / 2.0f)
+            else if (distanceToWall < depth / 2.0f)
             {
-                nShade = '?';
+                shade = 'X';
             }
-            else if (fDistanceToWall < fDepth)
+            else if (distanceToWall < depth)
             {
-                nShade = '~';
+                shade = '+';
             }
             else
             {
-                nShade = ' ';
+                shade = ' ';
             }
 
-            if (bBoundary)
+            if (boundary)
             {
-                nShade = ' ';
+                shade = ' ';
             }
 
-            for (int y = 0; y < nScreenHeight; ++y)
+            for (int y = 0; y < screenHeight; ++y)
             {
-                if (y < nCeiling)
+                if (y <= ceiling)
                 {
                     attron(COLOR_PAIR(1));
                     mvwaddch(stdscr, y, x, ' ');
                 }
-                else if (y > nCeiling && y <= nFloor)
+                else if (y > ceiling && y <= floor)
                 {
                     attron(COLOR_PAIR(2));
-                    mvwaddch(stdscr, y, x, nShade);
+                    mvwaddch(stdscr, y, x, shade);
                 }
                 else
                 {
                     attron(COLOR_PAIR(3));
-                    mvwaddch(stdscr, y, x, '.');
+                    mvwaddch(stdscr, y, x, ' ');
                 }
             }
         }
         attron(COLOR_PAIR(4));
-        for(int nx = 0; nx < nMapWidth; ++nx)
+        for(int nx = 0; nx < mapWidth; ++nx)
         {
-            for(int ny = 0; ny < nMapHeight; ++ny)
+            for(int ny = 0; ny < mapHeight; ++ny)
             {
-                mvwaddch(stdscr, ny, nx, map[ny * nMapWidth + nx]);
+                mvwaddch(stdscr, ny, nx, map[ny * mapWidth + nx]);
             }
         }
-        mvwaddch(stdscr, (int)fPlayerY, (int)fPlayerX, 'P');
-        mvwaddstr(stdscr, nMapHeight, 0, std::to_string(fPlayerX).c_str());
-        mvwaddstr(stdscr, nMapHeight + 1, 0, std::to_string(fPlayerY).c_str());
+        mvwaddch(stdscr, (int)playerY, (int)playerX, 'P');
         refresh();
-        napms(1000 / 30);
+        napms(1000 / 30);   // 30 fps
         tp2 = std::chrono::system_clock::now();
     }
     endwin();
