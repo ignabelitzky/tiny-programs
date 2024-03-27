@@ -1,5 +1,5 @@
 CXX := g++
-CXXFLAGS := -Wall -Werror -Wextra -pedantic -std=c++23 -O3 -march=native
+CXXFLAGS := -Wall -Werror -Wextra -pedantic -std=c++23 -O3 -march=native -g
 SFMLFLAGS := -lsfml-graphics -lsfml-window -lsfml-system
 
 TARGET := main
