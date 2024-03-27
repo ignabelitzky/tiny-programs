@@ -4,7 +4,7 @@ SFMLFLAGS := -lsfml-graphics -lsfml-window -lsfml-system
 
 TARGET := main
 
-SRC := src/main.cpp
+SRC := src/main.cpp src/utils.cpp
 OBJ := $(SRC:.cpp=.o)
 
 all: $(TARGET)
