@@ -88,7 +88,7 @@ int main()
             {
                 for (int i = 0; i < 1000; i++)
                 {
-                    add_density(fluid, rand() % (N - 2), rand() % (N - 2), rand() % 300 + 50make);
+                    add_density(fluid, rand() % (N - 2), rand() % (N - 2), rand() % 300 + 50);
                 }
             }
             else if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Right)
