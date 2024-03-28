@@ -1,32 +1,37 @@
 #include "../include/params.hpp"
 #include "../include/utils.hpp"
 #include <SFML/Graphics.hpp>
-#include <time.h>
 #include <stdlib.h>
+#include <time.h>
 
 int main()
 {
     srand(time(NULL));
     Fluid *fluid = create_fluid(N, 0.0, 0.0, 0.07); // diffusion, viscosity, dt
     sf::RenderWindow window(sf::VideoMode(N, N), "Fluid Simulation");
+    sf::VideoMode desktopMode = sf::VideoMode::getDesktopMode();
+    window.setSize(sf::Vector2u(desktopMode.width, desktopMode.height));
     sf::View view(sf::FloatRect(0, 0, N, N));
     window.setView(view);
 
     bool isPanning = false;
     sf::Vector2i lastMousePos;
 
-    for(int i = 0; i < 50000; i++) {
-        add_density(fluid, rand() % (N-2), rand() % (N-2), 100.0f);
+    for (int i = 0; i < 20000; i++)
+    {
+        add_density(fluid, rand() % (N - 2), rand() % (N - 2), rand() % 300 + 50);
     }
 
-    for(int i = 0; i < 10000; i++) {
+    for (int i = 0; i < 5000; i++)
+    {
         float value1 = (float)rand() / RAND_MAX * 2.0f - 1.0f;
         float value2 = (float)rand() / RAND_MAX * 2.0f - 1.0f;
-        add_velocity(fluid, rand() % (N-300) + 150, rand() % (N-300) + 150, value1, value2);
+        add_velocity(fluid, rand() % (N - 80) + 40, rand() % (N - 80) + 40, value1, value2);
     }
 
-    for(int i = 0; i < 50000; i++) {
-        add_density(fluid, rand() % (N-2), rand() % (N-2), 100.0f);
+    for (int i = 0; i < 20000; i++)
+    {
+        add_density(fluid, rand() % (N - 2), rand() % (N - 2), rand() % 300 + 50);
     }
 
     while (window.isOpen())
@@ -61,41 +66,38 @@ int main()
                 }
                 window.setView(view);
             }
-            else if(event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Middle)
+            else if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Middle)
             {
                 isPanning = true;
                 lastMousePos = sf::Mouse::getPosition(window);
             }
-            else if(event.type == sf::Event::MouseButtonReleased && event.mouseButton.button == sf::Mouse::Middle)
+            else if (event.type == sf::Event::MouseButtonReleased && event.mouseButton.button == sf::Mouse::Middle)
             {
                 isPanning = false;
             }
-            else if(event.type == sf::Event::MouseMoved && isPanning)
+            else if (event.type == sf::Event::MouseMoved && isPanning)
             {
                 sf::Vector2i mousePos = sf::Mouse::getPosition(window);
-                sf::Vector2f offset = window.mapPixelToCoords(lastMousePos, view) - window.mapPixelToCoords(mousePos, view);
+                sf::Vector2f offset =
+                    window.mapPixelToCoords(lastMousePos, view) - window.mapPixelToCoords(mousePos, view);
                 view.move(offset);
                 window.setView(view);
                 lastMousePos = mousePos;
             }
-            else if(event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left)
+            else if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left)
             {
-                sf::Vector2i mousePos = sf::Mouse::getPosition(window);
-                sf::Vector2f worldPos = window.mapPixelToCoords(mousePos, view); // Convertir a coordenadas de la vista
-                if (worldPos.x >= 0 && worldPos.y >= 0 && worldPos.x < N && worldPos.y < N)
+                for (int i = 0; i < 1000; i++)
                 {
-                    // Si el clic está dentro de los límites de la vista, agregar densidad
-                    add_density(fluid, worldPos.x, worldPos.y, 100.0f);
+                    add_density(fluid, rand() % (N - 2), rand() % (N - 2), rand() % 300 + 50make);
                 }
             }
-            else if(event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Right)
+            else if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Right)
             {
-                sf::Vector2i mousePos = sf::Mouse::getPosition(window);
-                sf::Vector2f worldPos = window.mapPixelToCoords(mousePos, view); // Convertir a coordenadas de la vista
-                if (worldPos.x >= 0 && worldPos.y >= 0 && worldPos.x < N && worldPos.y < N)
+                for (int i = 0; i < 100; i++)
                 {
-                    // Si el clic está dentro de los límites de la vista, agregar velocidad
-                    add_velocity(fluid, worldPos.x, worldPos.y, 50.0f, 50.0f);
+                    float value1 = (float)rand() / RAND_MAX * 2.0f - 1.0f;
+                    float value2 = (float)rand() / RAND_MAX * 2.0f - 1.0f;
+                    add_velocity(fluid, rand() % (N - 80) + 40, rand() % (N - 80) + 40, value1, value2);
                 }
             }
         }
