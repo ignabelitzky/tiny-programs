@@ -35,19 +35,10 @@ void load_data_from_file(std::string filename, std::vector<std::vector<float>> &
             }
             else
             {
-                row.push_back(0.0f);
                 std::cerr << "Invalid float value: = " << token << std::endl;
             }
         }
         data.push_back(row);
-    }
-    for (auto row : data)
-    {
-        for (auto elem : row)
-        {
-            std::cout << elem << " ";
-        }
-        std::cout << std::endl;
     }
     file.close();
 }

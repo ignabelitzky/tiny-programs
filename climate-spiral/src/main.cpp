@@ -1,5 +1,6 @@
 #include "../include/baseline.hpp"
 #include "../include/utils.hpp"
+#include <math.h>
 
 int main()
 {
@@ -50,7 +51,7 @@ int main()
                 line[1].color = sf::Color::White;
                 startPoint = line[1].position;
                 window.draw(line, 2, sf::Lines);
-                sf::sleep(sf::milliseconds(50));
+                sf::sleep(sf::milliseconds(40));
                 window.display();
             }
         }

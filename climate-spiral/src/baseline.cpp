@@ -3,7 +3,7 @@
 Baseline::Baseline()
 {
     radius = {ZERO_RADIUS, ONE_RADIUS, MONTH_RADIUS};
-    thickness = {1.0f, 1.0f, 2.0f};
+    thickness = {2.0f, 2.0f, 4.0f};
     color = {sf::Color::Green, sf::Color::Red, sf::Color::Yellow};
     font.loadFromFile("resources/arial-font/arial.ttf");
     for (int i = 0; i < 3; ++i)
@@ -44,13 +44,14 @@ void Baseline::draw(sf::RenderWindow &window)
     }
     sf::Text text;
     text.setFont(font);
-    text.setString("0 degrees");
-    text.setCharacterSize(12);
-    text.setFillColor(sf::Color::White);
+    text.setString("0 celcius degrees");
+    text.setCharacterSize(18);
+    text.setFillColor(sf::Color::Green);
     text.setOrigin(text.getGlobalBounds().width / 2, text.getGlobalBounds().height / 2);
     text.setPosition(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - (ZERO_RADIUS + TEXT_OFFSET));
     window.draw(text);
-    text.setString("1 degrees");
+    text.setString("1 celcius degree");
+    text.setFillColor(sf::Color::Red);
     text.setPosition(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - (ONE_RADIUS + TEXT_OFFSET));
     window.draw(text);
 }
