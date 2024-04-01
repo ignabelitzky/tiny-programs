@@ -15,5 +15,8 @@ $(TARGET): $(OBJ)
 %.o: %.cpp
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
+format:
+	clang-format -style=Microsoft -i src/*.cpp include/*.hpp
+
 clean:
 	rm -f $(OBJ) $(TARGET)

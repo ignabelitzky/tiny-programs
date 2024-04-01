@@ -1,4 +1,4 @@
-#include "../include/helper.h"
+#include "../include/helper.hpp"
 
 int genRandomInt(int min, int max) {
     std::random_device rd;

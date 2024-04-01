@@ -1,5 +1,5 @@
-#ifndef HELPER_H
-#define HELPER_H
+#ifndef HELPER_HPP
+#define HELPER_HPP
 
 #include <cmath>
 #include <random>

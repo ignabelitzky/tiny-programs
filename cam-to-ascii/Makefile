@@ -16,5 +16,8 @@ $(TARGET): $(OBJ)
 %.o: %.cpp
 	$(CXX) -c -o $@ $< $(CXXFLAGS) $(OPENCV_LIBS)
 
+format:
+	clang-format -style=Microsoft -i *.cpp
+
 clean:
 	rm -f $(TARGET) $(OBJ)

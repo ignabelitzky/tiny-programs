@@ -2,7 +2,7 @@
 #include <iostream>
 #include <cmath>
 #include <omp.h>
-#include "../include/helper.h"
+#include "../include/helper.hpp"
 
 sf::Clock ctr;
 
