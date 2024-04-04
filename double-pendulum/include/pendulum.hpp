@@ -42,11 +42,6 @@ class Pendulum
     float angularVelocityTwo;
     float angularAccelerationOne;
     float angularAccelerationTwo;
-    sf::CircleShape *bobOne;
-    sf::CircleShape *bobTwo;
-    sf::VertexArray *lineOne;
-    sf::VertexArray *lineTwo;
-    sf::RectangleShape *rectangle;
 };
 
 #endif
