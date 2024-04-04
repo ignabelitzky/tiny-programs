@@ -25,6 +25,7 @@ class Pendulum
     float getAngleTwo();
     void update(float deltaTime);
     void draw(sf::RenderWindow &window);
+    void handleEvent(const sf::Event &event);
     void reset();
 
   private:

@@ -3,10 +3,10 @@
 Pendulum::Pendulum()
 {
     origin = std::make_pair(width / 2.0f, height / 2.0f);
-    lengthOne = 100.0f;
-    lengthTwo = 100.0f;
-    massOne = 10.0f;
-    massTwo = 10.0f;
+    lengthOne = 200.0f;
+    lengthTwo = 200.0f;
+    massOne = 20.0f;
+    massTwo = 30.0f;
     angleOne = M_PI / 8.0f;
     angleTwo = M_PI / 4.0f;
     positionOne = std::make_pair(lengthOne * sin(angleOne) + origin.first, -lengthOne * cos(angleOne) + origin.second);
@@ -140,6 +140,17 @@ void Pendulum::draw(sf::RenderWindow &window)
     window.draw(lineTwo, 2, sf::Lines);
     window.draw(pendulumOne);
     window.draw(pendulumTwo);
+}
+
+void Pendulum::handleEvent(const sf::Event &event)
+{
+    if (event.type == sf::Event::KeyPressed)
+    {
+        if (event.key.code == sf::Keyboard::R)
+        {
+            reset();
+        }
+    }
 }
 
 void Pendulum::reset()
