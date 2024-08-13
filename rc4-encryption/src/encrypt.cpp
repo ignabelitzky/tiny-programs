@@ -31,10 +31,25 @@ int main()
 
     // Write the encrypted data
     std::ofstream output("encrypted_output.txt", std::ios::binary);
+    int breakLine = 0;
+    std::cout << "Encrypted data: " << std::endl;
     for(unsigned int k = 0; k < data.size(); ++k)
     {
         output.put(static_cast<char>(data[k]));
+        std::cout << std::hex << data[k] << " ";
+        if(breakLine == 10)
+        {
+            std::cout << std::endl;
+            breakLine = 0;
+        }
+        else
+        {
+            ++breakLine;
+        }
     }
+
+    std::cout << std::endl;
+    std::cout << "Encrypted data has been written to encrypted_output.txt" << std::endl;
 
     // Close the files
     file.close();
