@@ -8,19 +8,19 @@
 int main()
 {
     // Create two grids
-    std::vector<std::vector<std::pair<int, int>>> gridOne(params::width, std::vector<std::pair<int, int>>(params::height));
-    std::vector<std::vector<std::pair<int, int>>> gridTwo(params::width, std::vector<std::pair<int, int>>(params::height));
+    std::vector<std::vector<std::pair<float, float>>> gridOne(params::width, std::vector<std::pair<float, float>>(params::height));
+    std::vector<std::vector<std::pair<float, float>>> gridTwo(params::width, std::vector<std::pair<float, float>>(params::height));
     
-    std::vector<std::vector<std::pair<int, int>>>* currentGrid = &gridOne;
-    std::vector<std::vector<std::pair<int, int>>>* nextGrid = &gridTwo;
+    std::vector<std::vector<std::pair<float, float>>>* currentGrid = &gridOne;
+    std::vector<std::vector<std::pair<float, float>>>* nextGrid = &gridTwo;
 
     // Initialize the grids
     for (int i = 0; i < params::width; i++)
     {
         for (int j = 0; j < params::height; j++)
         {
-            (*currentGrid)[i][j] = std::make_pair(1, 0);
-            (*nextGrid)[i][j] = std::make_pair(1, 0);
+            (*currentGrid)[i][j] = std::make_pair(1.0f, 0.0f);
+            (*nextGrid)[i][j] = std::make_pair(1.0f, 0.0f);
         }
     }
 
@@ -31,7 +31,7 @@ int main()
         {
             if (i < params::width && j < params::height) // Bounds checking
             {
-                (*currentGrid)[i][j] = std::make_pair(0, 1);
+                (*currentGrid)[i][j] = std::make_pair(0.0f, 1.0f);
             }
         }
     }
@@ -69,8 +69,8 @@ int main()
         {
             float a = currentGrid->at(i).at(j).first;
             float b = currentGrid->at(i).at(j).second;
-            nextGrid->at(i).at(j).first = a + laplaceA(currentGrid, i, j) - a * b * b + params::feed * (1 - a);
-            nextGrid->at(i).at(j).second = b + laplaceB(currentGrid, i, j) + a * b * b - (params::kill + params::feed) * b;
+            nextGrid->at(i).at(j).first = a + params::dA * laplaceA(currentGrid, i, j) - a * b * b + params::feed * (1 - a);
+            nextGrid->at(i).at(j).second = b + params::dB * laplaceB(currentGrid, i, j) + a * b * b - (params::kill + params::feed) * b;
         }
     }
 
@@ -88,7 +88,6 @@ int main()
     texture.update(image); // Update the texture with the new image data
     window.draw(sprite);
     window.display();
-    sf::sleep(sf::milliseconds(100));
 
     std::swap(currentGrid, nextGrid); // Swap the grids
 }
