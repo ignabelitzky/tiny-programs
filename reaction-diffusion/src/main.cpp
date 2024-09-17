@@ -1,5 +1,6 @@
 #include "../include/params.hpp"
 #include "../include/utils.hpp"
+#include <omp.h>
 #include <SFML/Graphics.hpp>
 #include <vector>
 #include <utility>
@@ -15,6 +16,7 @@ int main()
     std::vector<std::vector<std::pair<float, float>>>* nextGrid = &gridTwo;
 
     // Initialize the grids
+    #pragma omp parallel for collapse(2) schedule(static)
     for (int i = 0; i < params::width; i++)
     {
         for (int j = 0; j < params::height; j++)
@@ -25,9 +27,22 @@ int main()
     }
 
     // Create a pattern in the grid
+    #pragma omp parallel for collapse(2) schedule(static)
     for (int i = 100; i < 150; ++i)
     {
         for (int j = 100; j < 150; ++j)
+        {
+            if (i < params::width && j < params::height) // Bounds checking
+            {
+                (*currentGrid)[i][j] = std::make_pair(0.0f, 1.0f);
+            }
+        }
+    }
+
+    #pragma omp parallel for collapse(2) schedule(static)
+    for (int i = 500; i < 550; ++i)
+    {
+        for (int j = 500; j < 550; ++j)
         {
             if (i < params::width && j < params::height) // Bounds checking
             {
@@ -63,6 +78,7 @@ int main()
     window.clear();
 
     // Update the grid values
+    #pragma omp parallel for collapse(2) schedule(static)
     for (int i = 1; i < params::width - 1; i++)
     {
         for (int j = 1; j < params::height - 1; j++)
@@ -75,6 +91,7 @@ int main()
     }
 
     // Update the image based on the grid
+    #pragma omp parallel for collapse(2) schedule(static)
     for (int i = 0; i < params::width; i++)
     {
         for (int j = 0; j < params::height; j++)
