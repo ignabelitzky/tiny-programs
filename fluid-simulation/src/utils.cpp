@@ -51,11 +51,13 @@ void add_velocity(Fluid *fluid, int x, int y, float amountX, float amountY)
 
 static void set_bnd(int b, float *x, int N)
 {
+    #pragma omp parallel for schedule(static) 
     for (int i = 1; i < N - 1; i++)
     {
         x[IX(i, 0, N)] = b == 2 ? -x[IX(i, 1, N)] : x[IX(i, 1, N)];
         x[IX(i, N - 1, N)] = b == 2 ? -x[IX(i, N - 2, N)] : x[IX(i, N - 2, N)];
     }
+    #pragma omp parallel for schedule(static) 
     for (int j = 1; j < N - 1; j++)
     {
         x[IX(0, j, N)] = b == 1 ? -x[IX(1, j, N)] : x[IX(1, j, N)];
@@ -71,6 +73,7 @@ static void set_bnd(int b, float *x, int N)
 static void lin_solve(int b, float *x, float *x0, float a, float c, int iter, int N)
 {
     float cRecip = 1.0 / c;
+    #pragma omp parallel for schedule(static) collapse(2) 
     for (int k = 0; k < iter; k++)
     {
         for (int j = 1; j < N - 1; j++)
@@ -94,6 +97,7 @@ static void diffuse(int b, float *x, float *x0, float diff, float dt, int iter, 
 
 static void project(float *velocX, float *velocY, float *p, float *div, int iter, int N)
 {
+    #pragma omp parallel for schedule(static) collapse(2) 
     for (int j = 1; j < N - 1; j++)
     {
         for (int i = 1; i < N - 1; i++)
@@ -109,6 +113,7 @@ static void project(float *velocX, float *velocY, float *p, float *div, int iter
     set_bnd(0, p, N);
     lin_solve(0, p, div, 1, 6, iter, N);
 
+    #pragma omp parallel for schedule(static) collapse(2) 
     for (int j = 1; j < N - 1; j++)
     {
         for (int i = 1; i < N - 1; i++)

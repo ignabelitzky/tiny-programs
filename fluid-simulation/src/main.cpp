@@ -3,6 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include <stdlib.h>
 #include <time.h>
+#include <omp.h>
 
 int main()
 {
@@ -17,11 +18,13 @@ int main()
     bool isPanning = false;
     sf::Vector2i lastMousePos;
 
+    #pragma omp parallel for schedule(static)
     for (int i = 0; i < 20000; i++)
     {
         add_density(fluid, rand() % (N - 2), rand() % (N - 2), rand() % 300 + 50);
     }
 
+    #pragma omp parallel for schedule(static)
     for (int i = 0; i < 5000; i++)
     {
         float value1 = (float)rand() / RAND_MAX * 2.0f - 1.0f;
@@ -29,6 +32,7 @@ int main()
         add_velocity(fluid, rand() % (N - 80) + 40, rand() % (N - 80) + 40, value1, value2);
     }
 
+    #pragma omp parallel for schedule(static)
     for (int i = 0; i < 20000; i++)
     {
         add_density(fluid, rand() % (N - 2), rand() % (N - 2), rand() % 300 + 50);
@@ -86,6 +90,7 @@ int main()
             }
             else if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left)
             {
+                #pragma omp parallel for schedule(static)
                 for (int i = 0; i < 1000; i++)
                 {
                     add_density(fluid, rand() % (N - 2), rand() % (N - 2), rand() % 300 + 50);
@@ -93,6 +98,7 @@ int main()
             }
             else if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Right)
             {
+                #pragma omp parallel for schedule(static)
                 for (int i = 0; i < 100; i++)
                 {
                     float value1 = (float)rand() / RAND_MAX * 2.0f - 1.0f;
@@ -103,6 +109,7 @@ int main()
         }
         step(fluid, N);
         sf::Uint8 *pixels = new sf::Uint8[N * N * 4];
+        #pragma omp parallel for collapse(2) schedule(static)
         for (int i = 1; i < N - 1; i++)
         {
             for (int j = 1; j < N - 1; j++)
