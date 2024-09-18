@@ -2,6 +2,7 @@
 
 int** make2DArray(int rows, int cols) {
     int** matrix = new int*[rows];
+    #pragma omp parallel for
     for(int i = 0; i < rows; ++i) {
         matrix[i] = new int[cols];
     }
@@ -9,6 +10,7 @@ int** make2DArray(int rows, int cols) {
 }
 
 void delete2DArray(int** matrix, int rows) {
+    #pragma omp parallel for
     for(int i = 0; i < rows; ++i) {
         delete[] matrix[i];
     }
@@ -24,6 +26,7 @@ int genRandomInt(int min, int max) {
 
 int countNeighbors(int** grid, int x, int y, int gridSize) {
     int sum = 0;
+    #pragma omp parallel for collapse(2) reduction(+:sum)
     for (int i = -1; i <= 1; ++i) {
         for (int j = -1; j <= 1; ++j) {
             // Handle wrap-around for cells on the edges of the grid

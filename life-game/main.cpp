@@ -1,4 +1,5 @@
 #include <SFML/Graphics.hpp>
+#include <omp.h>
 #include "params.h"
 #include "helper.h"
 
@@ -12,6 +13,7 @@ int main() {
 
     // Create the initial grid and populate it with random values
     int** grid = make2DArray(rows, cols);
+    #pragma omp parallel for
     for(int i = 0; i < rows; ++i) {
         for(int j = 0; j < cols; ++j) {
             grid[i][j] = genRandomInt(0, 1);
@@ -53,6 +55,7 @@ int main() {
         }
 
         // Update the grid based on the Game of Life rules
+        #pragma omp parallel for collapse(2) schedule(dynamic)
         for(int i = 0; i < rows; ++i) {
             for(int j = 0; j < cols; ++j) {
                 int neighbors = countNeighbors(grid, i, j, rows);

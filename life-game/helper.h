@@ -2,6 +2,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <random>
+#include <omp.h>
 
 int** make2DArray(int cols, int rows);
 
