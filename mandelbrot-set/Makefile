@@ -14,8 +14,7 @@ $(TARGET): $(OBJS)
 	$(CXX) $(CXXFLAGS) $(OBJS) -o $(TARGET) $(SFML_LIBS)
 
 %.o: %.cpp
-	$(CXX) $(CXXFLAGS) -c $< -o $@
-
+	$(CXX) $(CXXFLAGS) -c $< -o $@ $(SFML_LIBS)
 format:
 	clang-format -style=Microsoft -i *.cpp *.h
 
