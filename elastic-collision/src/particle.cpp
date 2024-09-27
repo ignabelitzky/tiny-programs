@@ -117,17 +117,24 @@ void Particle::edges()
 
 void Particle::collide(Particle *other)
 {
-    float distance = sqrt(pow(m_position.first - other->getPosition().first, 2) + pow(m_position.second - other->getPosition().second, 2));
-    if (distance < m_radius + other->getRadius())
+    std::pair<float, float> impactVector = std::make_pair(other->getPosition().first - m_position.first, other->getPosition().second - m_position.second);
+    float d = sqrt(pow(impactVector.first, 2) + pow(impactVector.second, 2));
+    if (d < m_radius + other->getRadius())
     {
-        float overlap = distance - m_radius - other->getRadius();
+        float overlap = d - (m_radius + other->getRadius());
+        std::pair<float, float> dir = std::make_pair(impactVector.first, impactVector.second);
+        dir = utils::setMagnitude(dir, overlap * 0.5f);
+        m_position.first += dir.first;
+        m_position.second += dir.second;
+        other->setPosition(other->getPosition().first - dir.first, other->getPosition().second - dir.second);
+
         float mSum = m_mass + other->getMass();
         
         // first particle
         std::pair<float, float> impact  = std::make_pair(other->getPosition().first - m_position.first, other->getPosition().second - m_position.second);
         std::pair<float, float> vDiff = std::make_pair(other->getVelocity().first - m_velocity.first, other->getVelocity().second - m_velocity.second);
         float numA = 2 * other->getMass() * (vDiff.first * impact.first + vDiff.second * impact.second);
-        float denA = mSum * pow(distance, 2);
+        float denA = mSum * pow(d, 2);
         float a = numA / denA;
         m_velocity.first += a * impact.first;
         m_velocity.second += a * impact.second;
@@ -136,7 +143,7 @@ void Particle::collide(Particle *other)
         std::pair<float, float> impact2 = std::make_pair(m_position.first - other->getPosition().first, m_position.second - other->getPosition().second);
         std::pair<float, float> vDiff2 = std::make_pair(m_velocity.first - other->getVelocity().first, m_velocity.second - other->getVelocity().second);
         float numB = 2 * m_mass * (vDiff2.first * impact2.first + vDiff2.second * impact2.second);
-        float denB = mSum * pow(distance, 2);
+        float denB = mSum * pow(d, 2);
         float b = numB / denB;
         other->setVelocity(other->getVelocity().first + b * impact2.first, other->getVelocity().second + b * impact2.second);
     }
