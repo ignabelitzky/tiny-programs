@@ -4,7 +4,7 @@ SFMLFLAGS := -lsfml-graphics -lsfml-window -lsfml-system
 
 TARGET := falling-sand-simulation
 
-SRC := src/main.cpp
+SRC := src/main.cpp src/helper.cpp
 OBJ := $(SRC:.cpp=.o)
 
 all: $(TARGET)

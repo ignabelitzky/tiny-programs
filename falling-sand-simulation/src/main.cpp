@@ -1,3 +1,4 @@
+#include "../include/helper.hpp"
 #include "../include/params.hpp"
 #include <SFML/Graphics.hpp>
 #include <iostream>
@@ -29,7 +30,7 @@ int main()
     grid[2][2] = 1;
 
     sf::Clock clock;
-    sf::Time interval = sf::seconds(0.2f);
+    sf::Time interval = sf::seconds(0.05f);
 
     while (window.isOpen())
     {
@@ -51,6 +52,9 @@ int main()
 
         if (clock.getElapsedTime() >= interval)
         {
+            int randomColumn = get_random_int(0, cols - 1);
+            grid[0][randomColumn] = 1;
+
             window.clear();
 
             // Draw the cells based on the grid values
@@ -76,17 +80,14 @@ int main()
                 }
             }
 
-            bool updated = false;
-
-            for (int i = 0; i < rows - 1; ++i)
+            for (int i = rows - 2; i >= 0; --i)
             {
                 for (int j = 0; j < cols; ++j)
                 {
-                    if (grid[i][j] == 1 && !updated)
+                    if (grid[i][j] == 1 && grid[i + 1][j] != 1)
                     {
                         grid[i][j] = 0;
                         grid[i + 1][j] = 1;
-                        updated = true;
                     }
                 }
             }
