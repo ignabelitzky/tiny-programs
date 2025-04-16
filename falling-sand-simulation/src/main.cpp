@@ -26,6 +26,11 @@ int main()
         }
     }
 
+    grid[2][2] = 1;
+
+    sf::Clock clock;
+    sf::Time interval = sf::seconds(0.2f);
+
     while (window.isOpen())
     {
         sf::Event event;
@@ -43,32 +48,53 @@ int main()
                 }
             }
         }
-        window.clear();
 
-        // Draw the cells based on the grid values
-        for (int i = 0; i < rows; ++i)
+        if (clock.getElapsedTime() >= interval)
         {
-            for (int j = 0; j < cols; ++j)
+            window.clear();
+
+            // Draw the cells based on the grid values
+            for (int i = 0; i < rows; ++i)
             {
-                int x = j * CELL_SIZE;
-                int y = i * CELL_SIZE;
+                for (int j = 0; j < cols; ++j)
+                {
+                    int x = j * CELL_SIZE;
+                    int y = i * CELL_SIZE;
 
-                sf::RectangleShape rect;
-                rect.setSize(sf::Vector2f(CELL_SIZE, CELL_SIZE));
-                rect.setPosition(x, y);
-                if (grid[i][j] == 1)
-                {
-                    rect.setFillColor(sf::Color::White);
+                    sf::RectangleShape rect;
+                    rect.setSize(sf::Vector2f(CELL_SIZE, CELL_SIZE));
+                    rect.setPosition(x, y);
+                    if (grid[i][j] == 1)
+                    {
+                        rect.setFillColor(sf::Color::White);
+                    }
+                    else
+                    {
+                        rect.setFillColor(sf::Color::Black);
+                    }
+                    window.draw(rect);
                 }
-                else
-                {
-                    rect.setFillColor(sf::Color::Black);
-                }
-                window.draw(rect);
             }
-        }
 
-        window.display();
+            bool updated = false;
+
+            for (int i = 0; i < rows - 1; ++i)
+            {
+                for (int j = 0; j < cols; ++j)
+                {
+                    if (grid[i][j] == 1 && !updated)
+                    {
+                        grid[i][j] = 0;
+                        grid[i + 1][j] = 1;
+                        updated = true;
+                    }
+                }
+            }
+
+            window.display();
+
+            clock.restart();
+        }
     }
 
     // Delete the grid
